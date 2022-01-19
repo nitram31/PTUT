@@ -2,9 +2,8 @@ import tkinter
 from tkinter import *
 from tkinter import filedialog
 from Mylib import Fastaboy
-def main():
 
-    root = Tk()
+def main():
 
     def myclick():
         path = mypath.get()
@@ -17,9 +16,7 @@ def main():
             mylabel2 = Label(root, text=button_message)
             mylabel2.grid(row=4, column=0)
             Seq_dict = Fastaboy.fasta_reader(path)
-            data_size = int(len(Seq_dict.keys())/2)
-            progress = 0
-
+            data_size = int(len(Seq_dict.keys())/8)
             for residue_number in range(0, int(data_size)):
                 progress_bar(residue_number, data_size)
                 progress = residue_number
@@ -47,16 +44,15 @@ def main():
     def copy(self):
         self.entry.event_generate('<Control-c>')
 
+    root = Tk()
 
     mylabel2 = Label(root, text="")
-
 
     frame = LabelFrame(root, text="Fasta file path")
     frame.grid(row=2, column=0, padx=10, pady=50)
 
     frame2 = LabelFrame(root, text="Select Fasta file")
     frame2.grid(row=2, column=1, padx=10, pady=10)
-
 
 
     mybutton = Button(root, text="Run scan", command=myclick)
@@ -70,6 +66,6 @@ def main():
 
     mylabel2.grid(row=2, column=1)
 
-
     root.mainloop()
-main()
+if __name__ == "__main__":
+    main()
