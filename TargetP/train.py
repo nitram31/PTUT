@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r"C:\Users\Martin\PycharmProjects\pythonProject\venv\Lib\site-packages")
+sys.path.append(r"C:\Users\Martin\PycharmProjects\pythonProject\venv2\Lib\site-packages")
 import numpy as np
 import os
 import time
