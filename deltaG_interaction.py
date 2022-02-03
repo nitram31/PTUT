@@ -1,16 +1,26 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-
-# create webdriver object
-driver = webdriver.Firefox()
+import re
+import requests
+from bs4 import BeautifulSoup
 
 seq = "ATEYIGYAWAMVVVIIGATIGIKLFKK"
 link = "https://dgpred.cbr.su.se/analyze.php?with_length=on&seq=" + seq
 
-driver.get(link)
+requete = requests.get(link)
+page = requete.content
+soup = BeautifulSoup(page, 'html.parser')
 
-# get element
-#element = driver.find_element(By.CSS_SELECTOR,".analyze > tbody:nth-child(1) > tr:nth-child(51) > td:nth-child(1) > big:nth-child(1) > b:nth-child(7) > span:nth-child(1)")
-element = driver.find_element(By.CSS_SELECTOR,"b.color: green")
+data = soup.table
 
-print(element)
+#res = re.compile(r'^([\w]*)(<b><span style="color: green">)([+-]\w.\w{3,})(</span></b></big></td></tr>)$')
+#res = re.compile(r'([+-])\w.\w{3,}')
+#print(res)
+for all in data:
+    if re.match(res, str(all)) != None:
+        print(all)
+        #pass
+#print(data)
+
+#<span style="color: green">-0.61</span>
+#/html/body/table/tbody/tr[3]/td/table/tbody/tr[51]/td/big/b/span
+
+
