@@ -11,21 +11,16 @@ def deltaG(seq):
 
     data = soup.table
 
-    #res = re.compile(r'^([\w]*)(<b><span style="color: green">)([+-]\w.\w{3,})(</span></b></big></td></tr>)$')
-    res = re.compile(r'\w*\t=\t\w*')
-    #print(res)
+    res = re.compile(r'green\">(.*)</span></b></big></td></tr>')
     for all in data:
-        if re.match(res, str(all)) != None:
-            print(all)
-            #pass
-    print(data)
+        toto = re.search(res, str(all))
+        if toto is not None:
+            # print("line:", str(all))
+            print(toto.group(1))
 
-seq = "ATEYIGYAWAMVVVIIGATIGIKLFKK"
+    exit(0)
+
+seq = "ATEYIGYAWAMVVVIIGAWWGIKLFKK"
 print(deltaG(seq))
-    #<span style="color: green">-0.61</span>
-    #/html/body/table/tbody/tr[3]/td/table/tbody/tr[51]/td/big/b/span
-
-
-
 
 
