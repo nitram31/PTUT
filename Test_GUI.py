@@ -9,6 +9,16 @@ import Mylib.PTUT.charge as charge
 
 
 def main():
+
+    root = Tk()
+
+    def myclick():
+        path = mypath.get()
+        button_message = "please select a file"
+        if path == "":
+            mylabel2 = Label(root, text=button_message)
+            mylabel2.grid(row=4, column=0)
+        else:
             button_message = "scanning " + path + " for proteins"
             mylabel2 = Label(root, text=button_message)
             mylabel2.grid(row=4, column=0)
@@ -21,8 +31,8 @@ def main():
             seq_dict = tm_hmm.sort_dict(seq_dict)
             seq_dict = deltaG_interaction.deltaG(seq_dict)
             seq_dict = charge.dict_parser(seq_dict)
-            print("post parser", seq_dict)
-            print(len(seq_dict.keys()))
+            seq_dict = charge.discriminate_charge(seq_dict)
+
 
             '''data_size = int(len(seq_dict.keys())/2)
             progress = 0
