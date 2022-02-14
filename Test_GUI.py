@@ -1,9 +1,11 @@
 import tkinter
 from tkinter import *
 from tkinter import filedialog
-from Mylib import Fastaboy
-
+from Mylib.PTUT import Fastaboy
+import TargetP
 def main():
+
+    root = Tk()
 
     def myclick():
         path = mypath.get()
@@ -15,14 +17,21 @@ def main():
             button_message = "scanning " + path + " for proteins"
             mylabel2 = Label(root, text=button_message)
             mylabel2.grid(row=4, column=0)
-            Seq_dict = Fastaboy.fasta_reader(path)
-            data_size = int(len(Seq_dict.keys())/8)
+            seq_dict = Fastaboy.fasta_reader(path)
+            #print("pre", seq_dict)
+            seq_dict = TargetP.parse_targetp(r"D:\Bureau\Cours\M1\pythonProject\Mylib\PTUT\scere_summary.targetp2", seq_dict)
+            print("post", seq_dict)
+
+            '''data_size = int(len(seq_dict.keys())/2)
+            progress = 0
+
             for residue_number in range(0, int(data_size)):
                 progress_bar(residue_number, data_size)
+
                 progress = residue_number
-                print(progress)
             progress_label = Label(root, text="finished")
-            progress_label.grid(row=5, column=0, sticky=W+E)
+            progress_label.grid(row=5, column=0, sticky=W+E)'''
+            
 
 
     def progress_bar(progress, data_size):
@@ -44,15 +53,16 @@ def main():
     def copy(self):
         self.entry.event_generate('<Control-c>')
 
-    root = Tk()
 
     mylabel2 = Label(root, text="")
+
 
     frame = LabelFrame(root, text="Fasta file path")
     frame.grid(row=2, column=0, padx=10, pady=50)
 
     frame2 = LabelFrame(root, text="Select Fasta file")
     frame2.grid(row=2, column=1, padx=10, pady=10)
+
 
 
     mybutton = Button(root, text="Run scan", command=myclick)
@@ -66,6 +76,6 @@ def main():
 
     mylabel2.grid(row=2, column=1)
 
+
     root.mainloop()
-if __name__ == "__main__":
-    main()
+main()
