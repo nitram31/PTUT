@@ -1,10 +1,10 @@
-import tmhmm
+import pyTMHMM
 
 
 def tmhmm_read(seq_dict):
 
     for current_id in seq_dict.keys():
-        annotation = tmhmm.predict(seq_dict[current_id]['seq'], compute_posterior=False)
+        annotation = pyTMHMM.predict(seq_dict[current_id]['seq'], compute_posterior=False)
         last_pos = annotation[0]
         pos_list = []
         pos_list.append(last_pos)
@@ -42,18 +42,24 @@ def reformat_result(pos_list):
 def sort_dict(seq_dict):
     temp_seq_dict = {}
     for current_id in seq_dict.keys():
-
         try:
             if seq_dict[current_id]['targetp_pred'][0] != 'MT' and seq_dict[current_id]['tmhmm_pred'].count('M') == 1:
                 temp_seq_dict[current_id] = seq_dict[current_id]
-            if seq_dict[current_id]['targetp_pred'][0] == 'MT' and seq_dict[current_id]['tmhmm_pred'].count('M') >= 2:
-                temp_seq_dict[current_id] = seq_dict[current_id]
+            '''if seq_dict[current_id]['targetp_pred'][0] == 'MT' and seq_dict[current_id]['tmhmm_pred'].count('M') >= 2:
+                temp_seq_dict[current_id] = seq_dict[current_id]'''
         except:
-            print("protein dos not exist : ", current_id)
-
-
+            print("protein does not exist : ", current_id)
 
     seq_dict = temp_seq_dict
+    return seq_dict
+
+def orientation_sort(seq_dict):
+    temp_dict = {}
+    for current_id in seq_dict.keys():
+        if seq_dict[current_id]['tmhmm_pred'][0] == 'O':
+            temp_dict[current_id] = seq_dict[current_id]
+
+    seq_dict = temp_dict
     return seq_dict
 
 

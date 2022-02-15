@@ -24,15 +24,21 @@ def main():
             mylabel2.grid(row=4, column=0)
             seq_dict = Fastaboy.fasta_reader(path)
 
-            print(len(seq_dict.keys()))
-            seq_dict = TargetP.parse_targetp(r"D:\Bureau\Cours\M1\pythonProject\Mylib\PTUT\scere_summary.targetp2",
+            print("ori", len(seq_dict.keys()))
+            seq_dict = TargetP.parse_targetp(r"C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\scere_summary.targetp2",
                                              seq_dict)
             seq_dict = tm_hmm.tmhmm_read(seq_dict)
+            print(seq_dict['sp|Q07914|TIM14_YEAST'])
             seq_dict = tm_hmm.sort_dict(seq_dict)
+
             seq_dict = deltaG_interaction.deltaG(seq_dict)
             seq_dict = charge.dict_parser(seq_dict)
-            seq_dict = charge.discriminate_charge(seq_dict)
+            seq_dict = charge.charge_sort(seq_dict)
 
+            print("after dict parser", len(seq_dict.keys()))
+            seq_dict = tm_hmm.orientation_sort(seq_dict)
+            print(seq_dict)
+            print("after charge sort", len(seq_dict.keys()))
 
             '''data_size = int(len(seq_dict.keys())/2)
             progress = 0
@@ -85,5 +91,5 @@ def main():
 
     root.mainloop()
 
-
-main()
+if __name__ == "__main__":
+    main()

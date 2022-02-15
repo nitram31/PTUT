@@ -28,6 +28,10 @@ def deltaG(seq_dict):
                 # print("line:", str(all))
                 deltaG_pred = pred.group(2)
                 seq_dict[current_id]['deltaG_pred'] = deltaG_pred
+        try:
+            seq_dict[current_id]['deltaG_pred'] = seq_dict[current_id]['deltaG_pred']
+        except:
+            seq_dict[current_id]['deltaG_pred'] = "tm segment too long"
 
     return seq_dict
 
