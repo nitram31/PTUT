@@ -28,7 +28,6 @@ def main():
             seq_dict = TargetP.parse_targetp(r"C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\scere_summary.targetp2",
                                              seq_dict)
             seq_dict = tm_hmm.tmhmm_read(seq_dict)
-            print(seq_dict['sp|Q07914|TIM14_YEAST'])
             seq_dict = tm_hmm.sort_dict(seq_dict)
 
             seq_dict = deltaG_interaction.deltaG(seq_dict)

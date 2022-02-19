@@ -1,27 +1,29 @@
 import pyTMHMM
 
+def str_to_pos(annotation):
+    last_pos = annotation[0]
+    pos_list = []
+    pos_list.append(last_pos)
+    pos_list.append(1)
+
+    for i in range(1, len(annotation)):
+        current_pos = annotation[i]
+
+        if last_pos != current_pos:
+            pos_list.append(i)  # add last position to the list to record the end of segment
+            pos_list.append(current_pos)
+            pos_list.append(i + 1)
+
+        if i + 1 == len(annotation):
+            pos_list.append(i + 1)
+        last_pos = current_pos
+    return pos_list
 
 def tmhmm_read(seq_dict):
 
     for current_id in seq_dict.keys():
         annotation = pyTMHMM.predict(seq_dict[current_id]['seq'], compute_posterior=False)
-        last_pos = annotation[0]
-        pos_list = []
-        pos_list.append(last_pos)
-        pos_list.append(1)
-
-        for i in range(1, len(annotation)):
-            current_pos = annotation[i]
-
-            if last_pos != current_pos:
-                pos_list.append(i) #add last position to the list to record the end of segment
-                pos_list.append(current_pos)
-                pos_list.append(i+1)
-
-            if i+1 == len(annotation):
-                pos_list.append(i+1)
-            last_pos = current_pos
-
+        pos_list = str_to_pos(annotation)
         seq_dict[current_id]["tmhmm_pred"] = pos_list
     return seq_dict
 

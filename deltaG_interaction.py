@@ -2,6 +2,7 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
+
 def deltaG(seq_dict):
     for current_id in seq_dict.keys():
         seq = seq_dict[current_id]['seq']
