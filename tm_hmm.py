@@ -1,6 +1,9 @@
 import pyTMHMM
 
+
 def str_to_pos(annotation):
+    """reformat the annotation output from pytmhmm to a list by counting the number of letters in the string and
+    recording it as [letter_corresponding_to_subcellular_localisation, first_position, last_position]"""
     last_pos = annotation[0]
     pos_list = []
     pos_list.append(last_pos)
@@ -19,13 +22,16 @@ def str_to_pos(annotation):
         last_pos = current_pos
     return pos_list
 
+
 def tmhmm_read(seq_dict):
+    """takes a sequence dictionnary and adds the pytmhmm prediction"""
 
     for current_id in seq_dict.keys():
         annotation = pyTMHMM.predict(seq_dict[current_id]['seq'], compute_posterior=False)
-        pos_list = str_to_pos(annotation)
-        seq_dict[current_id]["tmhmm_pred"] = pos_list
+        pos_list = str_to_pos(annotation)  # reformat the raw results to a better form
+        seq_dict[current_id]['TMsegment_pred'] = pos_list
     return seq_dict
+
 
 def reformat_result(pos_list):
     annotation = ""
@@ -41,13 +47,15 @@ def reformat_result(pos_list):
         else:
             annotation += "outside "
 
+
 def sort_dict(seq_dict):
     temp_seq_dict = {}
     for current_id in seq_dict.keys():
         try:
-            if seq_dict[current_id]['targetp_pred'][0] != 'MT' and seq_dict[current_id]['tmhmm_pred'].count('M') == 1:
+            if seq_dict[current_id]['targetp_pred'][0] != 'MT' and seq_dict[current_id]['TMsegment_pred'].count(
+                    'M') == 1:
                 temp_seq_dict[current_id] = seq_dict[current_id]
-            '''if seq_dict[current_id]['targetp_pred'][0] == 'MT' and seq_dict[current_id]['tmhmm_pred'].count('M') >= 2:
+            '''if seq_dict[current_id]['targetp_pred'][0] == 'MT' and seq_dict[current_id]['TMsegment_pred'].count('M') >= 2:
                 temp_seq_dict[current_id] = seq_dict[current_id]'''
         except:
             print("protein does not exist : ", current_id)
@@ -55,14 +63,12 @@ def sort_dict(seq_dict):
     seq_dict = temp_seq_dict
     return seq_dict
 
+
 def orientation_sort(seq_dict):
     temp_dict = {}
     for current_id in seq_dict.keys():
-        if seq_dict[current_id]['tmhmm_pred'][0] == 'O':
+        if seq_dict[current_id]['TMsegment_pred'][0] == 'O':
             temp_dict[current_id] = seq_dict[current_id]
 
     seq_dict = temp_dict
     return seq_dict
-
-
-

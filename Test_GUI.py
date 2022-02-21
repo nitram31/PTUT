@@ -5,11 +5,11 @@ from Mylib.PTUT import Fastaboy
 import TargetP
 import tm_hmm
 import deltaG_interaction
+import HMMTOP
 import Mylib.PTUT.charge as charge
 
 
 def main():
-
     root = Tk()
 
     def myclick():
@@ -25,9 +25,12 @@ def main():
             seq_dict = Fastaboy.fasta_reader(path)
 
             print("ori", len(seq_dict.keys()))
-            seq_dict = TargetP.parse_targetp(r"C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\scere_summary.targetp2",
+            # seq_dict = TargetP.parse_targetp(r"C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT
+            # \scere_summary.targetp2", seq_dict)
+            seq_dict = TargetP.parse_targetp(r"D:\Bureau\Cours\M1\pythonProject\Mylib\PTUT\scere_summary.targetp2",
                                              seq_dict)
             seq_dict = tm_hmm.tmhmm_read(seq_dict)
+            seq_dict = HMMTOP.hmmtop_search(seq_dict)
             seq_dict = tm_hmm.sort_dict(seq_dict)
 
             seq_dict = deltaG_interaction.deltaG(seq_dict)
@@ -89,6 +92,7 @@ def main():
     mylabel2.grid(row=2, column=1)
 
     root.mainloop()
+
 
 if __name__ == "__main__":
     main()

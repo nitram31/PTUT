@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 def deltaG(seq_dict):
     for current_id in seq_dict.keys():
         seq = seq_dict[current_id]['seq']
-        tmhmm_pred = seq_dict[current_id]['tmhmm_pred']
+        tmhmm_pred = seq_dict[current_id]['TMsegment_pred']
 
         tm_segment = ""
         for i in range(0, len(tmhmm_pred), 3):
@@ -26,7 +26,6 @@ def deltaG(seq_dict):
         for all in data:
             pred = re.search(res, str(all))
             if pred is not None:
-                # print("line:", str(all))
                 deltaG_pred = pred.group(2)
                 seq_dict[current_id]['deltaG_pred'] = deltaG_pred
         try:
