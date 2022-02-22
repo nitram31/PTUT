@@ -1,28 +1,12 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from bs4 import BeautifulSoup
 import tm_hmm as tm
 import re
 import time
 
 
-def hmmtop_reformat(results):
-    """takes the results from the HMMTOP_search function, and reformat it to a same form as the pytmhmm.predict
-    function."""
-
-    annotation = ''
-    for res in results:
-        if res == 'i' or res == 'I':
-            annotation += 'i'
-        elif res == 'H' or res == 'h':
-            annotation += 'M'
-        elif res == 'o' or res == 'O':
-            annotation += 'O'
-    return annotation
-
-
-def hmmtop_search(seq_dict):
+def tmhmm20_search(seq_dict):
     """takes the dictionary, and if the sequence has not been predicted with a TM segment, it tries to predict it with
     HMMTOP"""
 
@@ -35,18 +19,6 @@ def hmmtop_search(seq_dict):
     url = "http://www.enzim.hu/hmmtop/html/submit.html"
     text_id = '/html/body/center/table/tbody/tr[2]/td/table/tbody/tr[2]/td/font/textarea'
     button_id = '/html/body/center/table/tbody/tr[2]/td/table/tbody/tr[3]/td[2]/input'
-    cpt = 1
-
-
-    #temporary
-    temp_seq_dict = {}
-    for current_id in seq_dict.keys():
-        try:
-            if seq_dict[current_id]['targetp_pred'][0] != 'MT' and seq_dict[current_id]['TMsegment_pred'].count(
-                    'M') == 0 or seq_dict[current_id]['TMsegment_pred'].count('M') == 1:
-                temp_seq_dict[current_id] = seq_dict[current_id]
-        except:
-            print("passed")
 
     seq_dict = temp_seq_dict
     max_length = len(seq_dict.keys())

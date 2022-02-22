@@ -25,22 +25,28 @@ def main():
             seq_dict = Fastaboy.fasta_reader(path)
 
             print("ori", len(seq_dict.keys()))
-            # seq_dict = TargetP.parse_targetp(r"C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT
-            # \scere_summary.targetp2", seq_dict)
-            seq_dict = TargetP.parse_targetp(r"D:\Bureau\Cours\M1\pythonProject\Mylib\PTUT\scere_summary.targetp2",
-                                             seq_dict)
+            seq_dict = TargetP.parse_targetp(r"C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\scere_summary.targetp2", seq_dict)
+            #seq_dict = TargetP.parse_targetp(r"D:\Bureau\Cours\M1\pythonProject\Mylib\PTUT\scere_summary.targetp2",
+            #                                 seq_dict)
             seq_dict = tm_hmm.tmhmm_read(seq_dict)
+            #print(seq_dict)
+            print("before HMMTOP", len(seq_dict.keys()))
             seq_dict = HMMTOP.hmmtop_search(seq_dict)
+            print("before HMMTOP", len(seq_dict.keys()))
             seq_dict = tm_hmm.sort_dict(seq_dict)
 
             seq_dict = deltaG_interaction.deltaG(seq_dict)
             seq_dict = charge.dict_parser(seq_dict)
-            seq_dict = charge.charge_sort(seq_dict)
-
             print("after dict parser", len(seq_dict.keys()))
+            print(seq_dict)
+            print("before charge sort")
+            seq_dict = charge.charge_sort(seq_dict)
+            print(seq_dict)
+            print("after charge sort")
+
             seq_dict = tm_hmm.orientation_sort(seq_dict)
             print(seq_dict)
-            print("after charge sort", len(seq_dict.keys()))
+            print("kekw", len(seq_dict.keys()))
 
             '''data_size = int(len(seq_dict.keys())/2)
             progress = 0

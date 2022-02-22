@@ -1,4 +1,5 @@
-import pyTMHMM
+import pyTMHMM as tm
+import biolib
 
 
 def str_to_pos(annotation):
@@ -27,9 +28,12 @@ def tmhmm_read(seq_dict):
     """takes a sequence dictionnary and adds the pytmhmm prediction"""
 
     for current_id in seq_dict.keys():
-        annotation = pyTMHMM.predict(seq_dict[current_id]['seq'], compute_posterior=False)
+        annotation = tm.predict(seq_dict[current_id]['seq'], compute_posterior=False)
+        if current_id == 'sp|P32839|BCS1_YEAST':
+            print(annotation)
         pos_list = str_to_pos(annotation)  # reformat the raw results to a better form
         seq_dict[current_id]['TMsegment_pred'] = pos_list
+
     return seq_dict
 
 

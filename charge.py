@@ -33,7 +33,7 @@ def dict_parser(seq_dict):
 def charge_sort(seq_dict):
     temp_dict = {}
     for current_id in seq_dict.keys():
-        if seq_dict[current_id]['charge'] >=2 and seq_dict[current_id]['charge'] <=3:
+        if seq_dict[current_id]['charge'] == 2 or seq_dict[current_id]['charge'] == 3:
             temp_dict[current_id] = seq_dict[current_id]
     seq_dict = temp_dict
     return seq_dict
