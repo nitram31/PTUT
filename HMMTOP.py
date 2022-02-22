@@ -39,7 +39,7 @@ def hmmtop_search(seq_dict):
 
 
     #temporary
-    temp_seq_dict = {}
+    """temp_seq_dict = {}
     for current_id in seq_dict.keys():
         try:
             if seq_dict[current_id]['targetp_pred'][0] != 'MT' and seq_dict[current_id]['TMsegment_pred'].count(
@@ -48,34 +48,35 @@ def hmmtop_search(seq_dict):
         except:
             print("passed")
 
-    seq_dict = temp_seq_dict
+    seq_dict = temp_seq_dict"""
     max_length = len(seq_dict.keys())
     for current_id in seq_dict.keys():
         print(cpt, "/", max_length)
         cpt += 1
-        if seq_dict[current_id]['TMsegment_pred'].count('M') == 0:  # finds sequence without TM predicted
-            print(current_id)
-            driver.get(url)  # refreshes the page to the menu
-            text_area = driver.find_element(By.XPATH, text_id)  # find the text area to paste the sequence in
-            button_area = driver.find_element(By.XPATH, button_id)
-            text_to_send = seq_dict[current_id]['seq']
-            text_area.send_keys(text_to_send)
-            time.sleep(0.75)
-            button_area.click()
-            time.sleep(0.75)
-            text = driver.find_element(By.XPATH, '/html/body/pre').text
-            other_res = re.compile(r'(pred )(\D*)')  # regular expression that finds the string of results
-            results = ''
-            for line in text.splitlines():
-                hmmtop_result = re.search(other_res, str(line))
-                if hmmtop_result is not None:
-                    results += hmmtop_result.group(2)
-                    annotation = hmmtop_reformat(results)
-                    """Reformat the results to be used by the str_to_pos function 
-                    that allows the string to be included in the dictionary as a list"""
-                    pos_list = tm.str_to_pos(annotation)
-                    seq_dict[current_id]['TMsegment_pred'] = pos_list
-
+        #if seq_dict[current_id]['TMsegment_pred'].count('M') == 0:  # finds sequence without TM predicted
+        print(current_id)
+        driver.get(url)  # refreshes the page to the menu
+        text_area = driver.find_element(By.XPATH, text_id)  # find the text area to paste the sequence in
+        button_area = driver.find_element(By.XPATH, button_id)
+        text_to_send = seq_dict[current_id]['seq']
+        text_area.send_keys(text_to_send)
+        time.sleep(0.25)
+        button_area.click()
+        time.sleep(0.75)
+        text = driver.find_element(By.XPATH, '/html/body/pre').text
+        other_res = re.compile(r'(pred )(\D*)')  # regular expression that finds the string of results
+        results = ''
+        for line in text.splitlines():
+            hmmtop_result = re.search(other_res, str(line))
+            if hmmtop_result is not None:
+                results += hmmtop_result.group(2)
+                annotation = hmmtop_reformat(results)
+                """Reformat the results to be used by the str_to_pos function 
+                that allows the string to be included in the dictionary as a list"""
+                #pos_list = tm.str_to_pos(annotation)
+                pos_list = [annotation[0], 1]
+                seq_dict[current_id]['TMsegment_pred'] = pos_list
+        break
     return seq_dict
 
 
