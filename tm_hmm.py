@@ -54,10 +54,11 @@ def sort_dict(seq_dict):
     temp_seq_dict = {}
     for current_id in seq_dict.keys():
         try:
-            if seq_dict[current_id]['targetp_pred'][0] != 'MT' and seq_dict[current_id]['TMsegment_pred'].count(
-                    'M') == 1:
+            if seq_dict[current_id]['targetp_pred'][0] != 'MT' \
+                    and seq_dict[current_id]['TMsegment_pred'].count('M') == 1:
                 temp_seq_dict[current_id] = seq_dict[current_id]
-            '''if seq_dict[current_id]['targetp_pred'][0] == 'MT' and seq_dict[current_id]['TMsegment_pred'].count('M') >= 2:
+            '''if seq_dict[current_id]['targetp_pred'][0] == 'MT' \
+                    and seq_dict[current_id]['TMsegment_pred'].count('M') >= 2:
                 temp_seq_dict[current_id] = seq_dict[current_id]'''
         except:
             print("protein does not exist : ", current_id)

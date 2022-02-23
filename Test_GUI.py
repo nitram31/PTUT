@@ -33,10 +33,26 @@ def main():
             #print(seq_dict)
             #print("before HMMTOP", len(seq_dict.keys()))
             seq_dict = HMMTOP.hmmtop_search(seq_dict)
-            #print("before HMMTOP", len(seq_dict.keys()))
+            print("after HMMTOP", len(seq_dict.keys()))
+            print(seq_dict)
             seq_dict = tm_hmm.sort_dict(seq_dict)
 
             seq_dict = deltaG_interaction.deltaG_TM(seq_dict)
+            with open("hmmtop_deltaG_result.txt", "w") as f:
+
+                for current_id in seq_dict.keys():
+                    current_line = str(current_id) \
+                                   + "\n" \
+                                   + str(seq_dict[current_id]['TMsegment_pred']) \
+                                   + "\n" \
+                                   + str(seq_dict[current_id]['deltaG_pred']) \
+                                   + "\n"
+
+                    f.write(current_line)
+            temp_seq_dict = {}
+            if seq_dict[current_id]['TMsegment_pred'].count('M') == 1:
+                temp_seq_dict[current_id] = seq_dict[current_id]
+            seq_dict = temp_seq_dict
             seq_dict = charge.dict_parser(seq_dict)
             print("after dict parser", len(seq_dict.keys()))
             #print(seq_dict)

@@ -76,7 +76,7 @@ def hmmtop_search(seq_dict):
                 #pos_list = tm.str_to_pos(annotation)
                 pos_list = [annotation[0], 1]
                 seq_dict[current_id]['TMsegment_pred'] = pos_list
-        break
+
     return seq_dict
 
 

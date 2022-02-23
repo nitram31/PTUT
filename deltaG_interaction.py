@@ -75,46 +75,53 @@ def deltaG_TM(seq_dict):
         time.sleep(0.75)
         button_area.click()
         time.sleep(2)
-        text = driver.find_element(By.XPATH, '/html/body/table[2]/tbody/tr[4]/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody').text
-        pattern = re.compile(r'(\d{1,3})(-)(\d{1,3})\s*(\d{2})\s*(.{6})\s*')  # regular expression that finds the string of results
-        first_res_orientation = seq_dict[current_id]['TMsegment_pred'][0]
-        if first_res_orientation == 'O' or first_res_orientation == 'o':
-            other_orientation = 'i'
-        else:
-            other_orientation = 'O'
         pos_list = seq_dict[current_id]['TMsegment_pred']
-        results = []
-        for line in text.splitlines():
-            deltaG_result = re.search(pattern, str(line))
-            if deltaG_result is not None:
+        try:
+            text = driver.find_element(By.XPATH, '/html/body/table[2]/tbody/tr[4]/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody').text
+            pattern = re.compile(r'(\d{1,3})(-)(\d{1,3})\s*(\d{2})\s*(.{6})\s*')  # regular expression that finds the string of results
+            first_res_orientation = seq_dict[current_id]['TMsegment_pred'][0]
+            if first_res_orientation == 'O' or first_res_orientation == 'o':
+                other_orientation = 'i'
+            else:
+                other_orientation = 'O'
+            tm_results = []
+            score_result = []
+            for line in text.splitlines():
+                deltaG_result = re.search(pattern, str(line))
+                if deltaG_result is not None:
 
-                tm_start = int(deltaG_result.group(1))
-                tm_end = int(deltaG_result.group(3))
-                deltaG_score = int(float(deltaG_result.group(5)))
-                results.append(tm_start)
-                results.append(tm_end)
-                if pos_list[1] == 1:
-                    pos_list.append(results[0]-1)
-                    pos_list.append('M')
-                    pos_list.append(results[0])
-                    pos_list.append(results[1])
-        for i in range(1, len(results), 2):
-            if pos_list[-3:][0] == 'M':
-                if pos_list[-6:][0] == first_res_orientation:
-                    pos_list.append(other_orientation)
-                else:
-                    pos_list.append(first_res_orientation)
-                pos_list.append(pos_list[-2:][0]+1)
-                try:
-                    pos_list.append(results[i+1]-1)
-                except:
-                    pos_list.append(len(text_to_send))
-                if i != len(results) - 1:
-                    pos_list.append('M')
-                    pos_list.append(results[i+1])
-                    pos_list.append(results[i+2])
-        seq_dict[current_id]['TMsegment_pred'] = pos_list
-        break
+                    tm_start = int(deltaG_result.group(1))
+                    tm_end = int(deltaG_result.group(3))
+                    deltaG_score = float(deltaG_result.group(5))
+                    score_result.append(deltaG_score)
+                    tm_results.append(tm_start)
+                    tm_results.append(tm_end)
+                    if pos_list[1] == 1:
+                        pos_list.append(tm_results[0]-1)
+                        pos_list.append('M')
+                        pos_list.append(tm_results[0])
+                        pos_list.append(tm_results[1])
+            for i in range(1, len(tm_results), 2):
+                if pos_list[-3:][0] == 'M':
+                    if pos_list[-6:][0] == first_res_orientation:
+                        pos_list.append(other_orientation)
+                    else:
+                        pos_list.append(first_res_orientation)
+                    pos_list.append(pos_list[-2:][0]+1)
+                    try:
+                        pos_list.append(tm_results[i+1]-1)
+                    except:
+                        pos_list.append(len(text_to_send))
+                    if i != len(tm_results) - 1:
+                        pos_list.append('M')
+                        pos_list.append(tm_results[i+1])
+                        pos_list.append(tm_results[i+2])
+            seq_dict[current_id]['TMsegment_pred'] = pos_list
+            seq_dict[current_id]['deltaG_pred'] = score_result
+        except:
+            pos_list.append(len(text_to_send))
+            seq_dict[current_id]['TMsegment_pred'] = pos_list
+            seq_dict[current_id]['deltaG_pred'] = 'No tm'
 
     return seq_dict
 if __name__ == "__main__":
