@@ -25,9 +25,9 @@ def main():
             seq_dict = Fastaboy.fasta_reader(path)
 
             print("ori", len(seq_dict.keys()))
-            #seq_dict = TargetP.parse_targetp(r"C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\scere_summary.targetp2", seq_dict)
-            seq_dict = TargetP.parse_targetp(r"D:\Bureau\Cours\M1\pythonProject\Mylib\PTUT\scere_summary.targetp2",
-                                             seq_dict)
+            seq_dict = TargetP.parse_targetp(r"C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\scere_summary.targetp2", seq_dict)
+            """seq_dict = TargetP.parse_targetp(r"D:\Bureau\Cours\M1\pythonProject\Mylib\PTUT\scere_summary.targetp2",
+                                             seq_dict)"""
 
             #seq_dict = tm_hmm.tmhmm_read(seq_dict)
             #print(seq_dict)
@@ -38,6 +38,7 @@ def main():
             seq_dict = tm_hmm.sort_dict(seq_dict)
 
             seq_dict = deltaG_interaction.deltaG_TM(seq_dict)
+            print(seq_dict)
             with open("hmmtop_deltaG_result.txt", "w") as f:
 
                 for current_id in seq_dict.keys():
@@ -50,12 +51,13 @@ def main():
 
                     f.write(current_line)
             temp_seq_dict = {}
-            if seq_dict[current_id]['TMsegment_pred'].count('M') == 1:
-                temp_seq_dict[current_id] = seq_dict[current_id]
+            for current_id in seq_dict.keys():
+                if seq_dict[current_id]['TMsegment_pred'].count('M') == 1:
+                    temp_seq_dict[current_id] = seq_dict[current_id]
             seq_dict = temp_seq_dict
             seq_dict = charge.dict_parser(seq_dict)
             print("after dict parser", len(seq_dict.keys()))
-            #print(seq_dict)
+            print(seq_dict)
             print("before charge sort")
             seq_dict = charge.charge_sort(seq_dict)
             #print(seq_dict)

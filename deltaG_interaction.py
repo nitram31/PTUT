@@ -8,6 +8,8 @@ import time
 
 
 def deltaG(seq_dict):
+
+    """Takes a dictionary and adds the predicted hydrophobicity score of the TM segment"""
     for current_id in seq_dict.keys():
         seq = seq_dict[current_id]['seq']
         tmhmm_pred = seq_dict[current_id]['TMsegment_pred']
@@ -41,6 +43,8 @@ def deltaG(seq_dict):
 
 
 def deltaG_TM(seq_dict):
+    """Takes a dictionary and adds the predicted transmembrane location based on a orientation prediction
+    (in the form of a pos_list : [O or i,1])"""
     WINDOW_SIZE = "1920,1080"
     chrome_options = Options()
     chrome_options.add_argument("--headless")  # allows the window to ot be seen
@@ -51,18 +55,7 @@ def deltaG_TM(seq_dict):
     text_id = '/html/body/table[2]/tbody/tr[5]/td/form/textarea'
     button_id = '/html/body/table[2]/tbody/tr[5]/td/form/input[1]'
     cpt = 1
-
-    # temporary
-    temp_seq_dict = {}
-    for current_id in seq_dict.keys():
-        try:
-            if seq_dict[current_id]['targetp_pred'][0] != 'MT':
-                temp_seq_dict[current_id] = seq_dict[current_id]
-        except:
-            print('protein does not exist')
-    seq_dict = temp_seq_dict
     max_length = len(seq_dict.keys())
-
     for current_id in seq_dict.keys():
         print(cpt, "/", max_length)
         cpt += 1
@@ -76,7 +69,7 @@ def deltaG_TM(seq_dict):
         button_area.click()
         time.sleep(2)
         pos_list = seq_dict[current_id]['TMsegment_pred']
-        try:
+        try: #if tm segment is found
             text = driver.find_element(By.XPATH, '/html/body/table[2]/tbody/tr[4]/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody').text
             pattern = re.compile(r'(\d{1,3})(-)(\d{1,3})\s*(\d{2})\s*(.{6})\s*')  # regular expression that finds the string of results
             first_res_orientation = seq_dict[current_id]['TMsegment_pred'][0]

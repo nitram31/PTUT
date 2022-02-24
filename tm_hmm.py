@@ -36,6 +36,8 @@ def tmhmm_read(seq_dict):
 
 
 def reformat_result(pos_list):
+    """takes a position list and convert it to a human readable form"""
+
     annotation = ""
     for i in range(0, len(pos_list), 3):
         annotation += str(pos_list[i + 1]) \
@@ -51,11 +53,11 @@ def reformat_result(pos_list):
 
 
 def sort_dict(seq_dict):
+    """Takes a dictionary and only keeps sequences that do not have a presequence"""
     temp_seq_dict = {}
     for current_id in seq_dict.keys():
         try:
-            if seq_dict[current_id]['targetp_pred'][0] != 'MT' \
-                    and seq_dict[current_id]['TMsegment_pred'].count('M') == 1:
+            if seq_dict[current_id]['targetp_pred'][0] != 'MT':
                 temp_seq_dict[current_id] = seq_dict[current_id]
             '''if seq_dict[current_id]['targetp_pred'][0] == 'MT' \
                     and seq_dict[current_id]['TMsegment_pred'].count('M') >= 2:
@@ -68,6 +70,7 @@ def sort_dict(seq_dict):
 
 
 def orientation_sort(seq_dict):
+    """Takes a dictionary and discard sequences that are not n-out"""
     temp_dict = {}
     for current_id in seq_dict.keys():
         if seq_dict[current_id]['TMsegment_pred'][0] == 'O':
