@@ -2,6 +2,7 @@ import tkinter
 from tkinter import *
 from tkinter import filedialog
 from Mylib.PTUT import Fastaboy
+from tabulate import tabulate
 import TargetP
 import tm_hmm
 import deltaG_interaction
@@ -36,28 +37,55 @@ def main():
             #seq_dict = HMMTOP.hmmtop_search(seq_dict)
             #print("after HMMTOP", len(seq_dict.keys()))
             #print(seq_dict)
-            seq_dict = tm_hmm.sort_dict(seq_dict)
+            #seq_dict = tm_hmm.sort_dict(seq_dict)
 
             #seq_dict = deltaG_interaction.deltaG_TM(seq_dict)
             #print(seq_dict)
 
-            temp_seq_dict = {}
+            """temp_seq_dict = {}
             for current_id in seq_dict.keys():
                 if seq_dict[current_id]['TMsegment_pred'].count('M') == 1:
                     temp_seq_dict[current_id] = seq_dict[current_id]
-            seq_dict = temp_seq_dict
+            seq_dict = temp_seq_dict"""
 
             seq_dict = charge.dict_parser(seq_dict)
             #print("after dict parser", len(seq_dict.keys()))
             #print(seq_dict)
             #print("before charge sort")
             seq_dict = charge.charge_sort(seq_dict)
-            print(seq_dict)
+            #print(seq_dict)
             #print("after charge sort")
 
             #seq_dict = tm_hmm.orientation_sort(seq_dict)
 
             #print(seq_dict)
+
+            table_values = []
+            col_names = []
+
+            first_prot = list(seq_dict.keys())[0]
+            for col in seq_dict[first_prot]:
+                col_names.append(col)
+            col_names[0] = 'name'
+            print('col_names', col_names)
+
+            for key in seq_dict.keys():
+                line = []
+                key_list = [key]
+                for variable_names in seq_dict[key]:
+                    if variable_names != 'seq':
+                        key_list.append(seq_dict[key][variable_names])
+                line.append(key_list)
+                table_values += line
+
+            print(tabulate(table_values, headers=col_names, tablefmt="fancy_grid"))
+
+
+
+
+
+
+
 
             print("kekw", len(seq_dict.keys()))
             with open("results.txt", "w") as f:
