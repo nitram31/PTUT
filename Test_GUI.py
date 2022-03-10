@@ -26,10 +26,10 @@ def main():
             seq_dict = Fastaboy.fasta_reader(path)
 
             print("ori", len(seq_dict.keys()))
-            #seq_dict = TargetP.parse_targetp(r"C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\scere_summary.targetp2", seq_dict)
-            seq_dict = TargetP.parse_targetp(r"D:\Bureau\Cours\M1\pythonProject\Mylib\PTUT\scere_summary.targetp2",
-                                             seq_dict)
-            seq_dict = Fastaboy.final_parser(r'D:\Bureau\Cours\M1\pythonProject\Mylib\PTUT\pipeline_results.txt', seq_dict)
+            seq_dict = TargetP.parse_targetp(r"C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\scere_summary.targetp2", seq_dict)
+            #seq_dict = TargetP.parse_targetp(r"D:\Bureau\Cours\M1\pythonProject\Mylib\PTUT\scere_summary.targetp2",
+                                             #seq_dict)
+            seq_dict = Fastaboy.final_parser(r'C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\pipeline_results.txt', seq_dict)
             #print('juste lu', seq_dict)
             #seq_dict = tm_hmm.tmhmm_read(seq_dict)
             #print(seq_dict)
@@ -80,7 +80,10 @@ def main():
 
             print(tabulate(table_values, headers=col_names, tablefmt="fancy_grid"))
 
-
+            content2 = tabulate(table_values, headers=col_names, tablefmt="tsv")
+            text_file = open("output.csv", "w")
+            text_file.write(content2)
+            text_file.close()
 
 
 
