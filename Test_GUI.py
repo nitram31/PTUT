@@ -4,6 +4,7 @@ from tkinter import filedialog
 from Mylib.PTUT import Fastaboy
 from tabulate import tabulate
 import TargetP
+import pandas as pd
 import tm_hmm
 import deltaG_interaction
 import HMMTOP
@@ -25,21 +26,22 @@ def main():
             mylabel2.grid(row=4, column=0)
             seq_dict = Fastaboy.fasta_reader(path)
 
-            print("ori", len(seq_dict.keys()))
+            #print("ori", len(seq_dict.keys()))
             seq_dict = TargetP.parse_targetp(r"C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\scere_summary.targetp2", seq_dict)
             #seq_dict = TargetP.parse_targetp(r"D:\Bureau\Cours\M1\pythonProject\Mylib\PTUT\scere_summary.targetp2",
                                              #seq_dict)
-            seq_dict = Fastaboy.final_parser(r'C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\pipeline_results.txt', seq_dict)
+            #print(seq_dict)
+            #seq_dict = Fastaboy.final_parser(r'C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\results.txt', seq_dict)
             #print('juste lu', seq_dict)
-            #seq_dict = tm_hmm.tmhmm_read(seq_dict)
+            seq_dict = tm_hmm.tmhmm_read(seq_dict)
             #print(seq_dict)
             #print("before HMMTOP", len(seq_dict.keys()))
-            #seq_dict = HMMTOP.hmmtop_search(seq_dict)
+            seq_dict = HMMTOP.hmmtop_search(seq_dict)
             #print("after HMMTOP", len(seq_dict.keys()))
             #print(seq_dict)
             #seq_dict = tm_hmm.sort_dict(seq_dict)
 
-            #seq_dict = deltaG_interaction.deltaG_TM(seq_dict)
+            seq_dict = deltaG_interaction.deltaG_TM(seq_dict)
             #print(seq_dict)
 
             """temp_seq_dict = {}
@@ -52,7 +54,7 @@ def main():
             #print("after dict parser", len(seq_dict.keys()))
             #print(seq_dict)
             #print("before charge sort")
-            seq_dict = charge.charge_sort(seq_dict)
+            #seq_dict = charge.charge_sort(seq_dict)
             #print(seq_dict)
             #print("after charge sort")
 
@@ -67,7 +69,7 @@ def main():
             for col in seq_dict[first_prot]:
                 col_names.append(col)
             col_names[0] = 'name'
-            print('col_names', col_names)
+
 
             for key in seq_dict.keys():
                 line = []
@@ -78,29 +80,27 @@ def main():
                 line.append(key_list)
                 table_values += line
 
-            print(tabulate(table_values, headers=col_names, tablefmt="fancy_grid"))
-
-            content2 = tabulate(table_values, headers=col_names, tablefmt="tsv")
-            text_file = open("output.csv", "w")
-            text_file.write(content2)
-            text_file.close()
+            #print(tabulate(table_values, headers=col_names, tablefmt="fancy_grid"))
+            content = pd.DataFrame(table_values, columns=col_names)
+            content.to_csv('output.csv', sep=";")
 
 
 
 
 
 
-            print("kekw", len(seq_dict.keys()))
+            #print("kekw", len(seq_dict.keys()))
             with open("results.txt", "w") as f:
-
                 for current_id in seq_dict.keys():
                     current_line = str(current_id) \
                                    + "\n" \
-                                   + str(seq_dict[current_id]['TMsegment_pred']) \
+                                   + str(seq_dict[current_id]['DeltaG+HMMTOP_TM_pred']) \
                                    + "\n" \
-                                   + str(seq_dict[current_id]['deltaG_pred']) \
+                                   + str(seq_dict[current_id]['deltaG_pred_score']) \
                                    + "\n" \
                                    + str(seq_dict[current_id]['charge']) \
+                                   + "\n" \
+                                   + str(seq_dict[current_id]['tmhmm_pred']) \
                                    + "\n"
                     f.write(current_line)
 
