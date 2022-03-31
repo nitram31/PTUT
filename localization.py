@@ -20,17 +20,17 @@ def creertable(nosprot, locprot):
 """
 
 def creertable(nosprot, locprot):
-    res = pd.merge(locprot, nosprot, how="outer", on="UniProt_ID")
+    res = pd.merge(locprot, nosprot, how="inner", on="Uniprot_ID")
     return(res)
 
 
 if __name__ == "__main__":
-    nosprot = pd.read_csv("sequences3.csv")
-    locprot = pd.read_csv("localisation_S2.csv")
+    nosprot = pd.read_csv("sequences3.csv", sep=";")
+    locprot = pd.read_csv("localisation_S2.csv", sep=";")
 
     nosprot.columns = nosprot.columns.str.strip()
     locprot.columns = locprot.columns.str.strip()
 
-    print("nosprot : ", nosprot.columns.tolist())
-    print("locprot : ", locprot.columns.tolist())
-    creertable(nosprot, locprot).to_csv("tab_localizations.csv", sep="\t", index=False) #export file
+    print("nosprot : ", nosprot.columns)
+    print("locprot : ", locprot.columns)
+    creertable(nosprot, locprot).to_csv("tab_localizations.csv", sep=";", index=False) #export file
