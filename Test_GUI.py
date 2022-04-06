@@ -9,6 +9,7 @@ import tm_hmm
 import deltaG_interaction
 import HMMTOP
 import Mylib.PTUT.charge as charge
+import localizations02
 
 
 def main():
@@ -61,6 +62,15 @@ def main():
             #seq_dict = tm_hmm.orientation_sort(seq_dict)
 
             #print(seq_dict)
+
+            """ ### colonne localisation
+            dict_localisations = localizations02
+            for keys in seq_dict:
+                seq_dict[keys].update({"localization: "}) #add new key to seq_dict for every protein
+                for i in keys.dict_localisations: #iteration of dictionnary in a function localizations02
+                    if seq_dict[keys] == dict_localisations[i] : #si on trouve la proteine de seq_dict dans localizations02
+                        seq_dict[keys]["localization: "] = dict_localisations[i].value """
+
 
             table_values = []
             col_names = []
