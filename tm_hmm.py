@@ -30,7 +30,7 @@ def tmhmm_read(seq_dict):
     for current_id in seq_dict.keys():
         annotation = tm.predict(seq_dict[current_id]['seq'], compute_posterior=False)
         pos_list = str_to_pos(annotation)  # reformat the raw results to a better form
-        seq_dict[current_id]['TMsegment_pred'] = pos_list
+        seq_dict[current_id]['tmhmm_pred'] = pos_list
 
     return seq_dict
 
@@ -73,7 +73,7 @@ def orientation_sort(seq_dict):
     """Takes a dictionary and discard sequences that are not n-out"""
     temp_dict = {}
     for current_id in seq_dict.keys():
-        if seq_dict[current_id]['TMsegment_pred'][0] == 'O':
+        if seq_dict[current_id]['DeltaG+HMMTOP_TM_pred'][0] == 'O':
             temp_dict[current_id] = seq_dict[current_id]
 
     seq_dict = temp_dict
