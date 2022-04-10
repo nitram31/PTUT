@@ -12,24 +12,79 @@ def wagdalena(seq):
         res = ""
     return res
 
+
 def dict_parser(seq_dict):
-    """Takes a dictionary and adds the cumulative charge of the 10 amino acids"""
+    """Takes a dictionary and adds the cumulative charge of the amino acids before and after the predicted
+    transmembrane segment"""
     for current_id in seq_dict.keys():
         seq = seq_dict[current_id]['seq']
-        tmhmm_pred = seq_dict[current_id]['TMsegment_pred']
-        tm_segment = ""
+        keys = seq_dict[current_id]
+        TM_results = []
+        for key in keys:
+            if 'TM_pred' in key:
+                TM_results.append(key)
 
-        for i in range(0, len(tmhmm_pred), 3): #iterate on the length of the pos_list, to select the letter
-            if tmhmm_pred[i] == 'M':
-                try:
-                    for l in range(tmhmm_pred[i + 2]+1, tmhmm_pred[i + 2]+11):
-                        tm_segment += seq[l]
-                except IndexError:
-                    for l in range(tmhmm_pred[i + 2]+1, len(tmhmm_pred)):
-                        tm_segment += seq[l]
+        for software_TM_pred in TM_results:
+            program_name = ""
 
-        seq_dict[current_id]['charge'] = wagdalena(tm_segment)
+            TM_pred = seq_dict[current_id][software_TM_pred]
+            j = 0
+            while software_TM_pred[j] != '_':
+                program_name += software_TM_pred[j]
+                j += 1
+
+            plus_10_after_TM_charge = program_name + '_plus_10_after_TM_charge'
+            plus_10_after_TM_sequence = program_name + '_plus_10_after_TM_sequence'
+            plus_5_after_TM_charge = program_name + '_plus_5_after_TM_charge'
+            minus_10_before_TM_charge = program_name + '_minus_10_before_TM_charge'
+            minus_5_before_TM_charge = program_name + '_minus_5_before_TM_charge'
+            tm_segment_length = program_name + '_tm_segment_length'
+
+            seq_dict[current_id][tm_segment_length] = []
+            seq_dict[current_id][plus_10_after_TM_charge] = []
+            seq_dict[current_id][plus_5_after_TM_charge] = []
+            seq_dict[current_id][plus_10_after_TM_sequence] = []
+            seq_dict[current_id][minus_5_before_TM_charge] = []
+            seq_dict[current_id][minus_10_before_TM_charge] = []
+
+            for i in range(0, len(TM_pred), 3):  # iterate on the length of the pos_list, to select the letter
+                if TM_pred[i] == 'M':
+
+                    ten_after_tm_segment = ""
+                    five_after_tm_segment = ""
+                    five_before_tm_segment = ""
+                    ten_before_tm_segment = ""
+
+                    try:
+                        for l in range(TM_pred[i + 2] - 1, TM_pred[i + 2] + 9):
+                            ten_after_tm_segment += seq[l]
+                            five_after_tm_segment += seq[l]
+                            five_after_tm_segment = five_after_tm_segment[0:4]
+                        for l in range(TM_pred[i - 1] - 9, TM_pred[i - 1] - 1):
+                            five_before_tm_segment += seq[l]
+                            five_before_tm_segment = five_before_tm_segment[0:4]
+                            ten_before_tm_segment += seq[l]
+
+                    except IndexError:
+                        for l in range(TM_pred[i + 2] - 1, len(TM_pred)):
+                            five_after_tm_segment += seq[l]
+                            five_after_tm_segment = five_after_tm_segment[0:4]
+                            ten_after_tm_segment += seq[l]
+                            five_before_tm_segment += seq[l]
+                            five_before_tm_segment = five_before_tm_segment[0:4]
+                            ten_before_tm_segment += seq[l]
+
+
+
+                    seq_dict[current_id][tm_segment_length].append(TM_pred[i + 2] - TM_pred[i + 1])
+                    seq_dict[current_id][plus_10_after_TM_charge].append(wagdalena(ten_after_tm_segment))
+                    seq_dict[current_id][plus_5_after_TM_charge].append(wagdalena(five_after_tm_segment))
+                    seq_dict[current_id][plus_10_after_TM_sequence].append(ten_after_tm_segment)
+                    seq_dict[current_id][minus_5_before_TM_charge].append(wagdalena(five_before_tm_segment))
+                    seq_dict[current_id][minus_10_before_TM_charge].append(wagdalena(ten_before_tm_segment))
+
     return seq_dict
+
 
 def charge_sort(seq_dict):
     """Takes a dictionary and discard proteins based on the predicted charge"""
@@ -41,6 +96,5 @@ def charge_sort(seq_dict):
     return seq_dict
 
 
-
 if __name__ == "__main__":
-    print(wagdalena("CSHWQLTQMFQRFYPGQAPSLAENFAEHVLRATNQISKNDPVGAIHNAE"))
+    print(wagdalena("AGH"))

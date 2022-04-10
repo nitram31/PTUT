@@ -16,7 +16,7 @@ def chargeparse(df, classe):
 # number of TM
 def numberTM(df):
     # second class protein with one TM
-    numberTM = df[(df['TMsegment_pred'].str.count('M') == 2) | (df['Tmhmm_pred'].str.count('M') == 2)]
+    numberTM = df[(df['DeltaG+HMMTOP_TM_pred'].str.count('M') == 2) | (df['Tmhmm_pred'].str.count('M') == 2)]
     return (numberTM)
 
 

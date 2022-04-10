@@ -61,7 +61,7 @@ def main():
 
             #seq_dict = tm_hmm.orientation_sort(seq_dict)
 
-            #print(seq_dict)
+            print(seq_dict)
 
             ### colonne localisation
             dict_localisations = localizations02.creertable(r"localisation_S2.csv")
@@ -92,12 +92,19 @@ def main():
             #print(tabulate(table_values, headers=col_names, tablefmt="fancy_grid"))
             content = pd.DataFrame(table_values, columns=col_names)
             content.to_csv('output.csv', sep=";")
+<<<<<<< Updated upstream
+
+=======
+>>>>>>> Stashed changes
 
 
 
 
 
-
+<<<<<<< Updated upstream
+=======
+            """
+>>>>>>> Stashed changes
             #print("kekw", len(seq_dict.keys()))
             with open("results.txt", "w") as f:
                 for current_id in seq_dict.keys():
@@ -111,7 +118,7 @@ def main():
                                    + "\n" \
                                    + str(seq_dict[current_id]['tmhmm_pred']) \
                                    + "\n"
-                    f.write(current_line)
+                    f.write(current_line)"""
 
             '''data_size = int(len(seq_dict.keys())/2)
             progress = 0

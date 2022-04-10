@@ -30,7 +30,7 @@ def tmhmm_read(seq_dict):
     for current_id in seq_dict.keys():
         annotation = tm.predict(seq_dict[current_id]['seq'], compute_posterior=False)
         pos_list = str_to_pos(annotation)  # reformat the raw results to a better form
-        seq_dict[current_id]['TMsegment_pred'] = pos_list
+        seq_dict[current_id]['tmhmm_TM_pred'] = pos_list
 
     return seq_dict
 
@@ -70,11 +70,9 @@ def sort_dict(seq_dict):
 
 
 def orientation_sort(seq_dict):
-    """Takes a dictionary and discard sequences that are not n-out"""
-    temp_dict = {}
-    for current_id in seq_dict.keys():
-        if seq_dict[current_id]['TMsegment_pred'][0] == 'O':
-            temp_dict[current_id] = seq_dict[current_id]
+    """Takes an idea and rip it to pieces"""
+    pass
 
-    seq_dict = temp_dict
+
     return seq_dict
+"""'sp|P07257|QCR2_YEAST': {'seq': Seq('MLSAARLQFAQGSVRRLTVSARDAPTKISTLAVKVHGGSRYATKDGVAHLLNRF...DEL'), 'targetp_pred': 'MT', 'targetp_pred_score': '0.995454', 'DeltaG+HMMTOP_TM_pred': ['O', 1, 368], 'deltaG_pred_score': 'No tm', 'tmhmm_pred': ['O', 1, 368], 'tmhmm_tm_segment_length': [], 'HMMTOP+DeltaG_tm_segment_length': [], 'tmhmm_charge': 0, 'tmhmm_tm_segment+10': '', 'tmhmm_tm_segment-5': 0, 'tmhmm_tm_segment-10': 0, 'HMMTOP+DeltaG_charge': 0, 'HMMTOP+DeltaG_tm_segment+10': ''}}"""

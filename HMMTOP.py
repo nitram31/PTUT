@@ -75,7 +75,8 @@ def hmmtop_search(seq_dict):
                 that allows the string to be included in the dictionary as a list"""
                 pos_list = tm.str_to_pos(annotation)
                 #pos_list = [annotation[0], 1]
-                seq_dict[current_id]['TMsegment_pred'] = pos_list
+                seq_dict[current_id]['HMMTOP_TM_pred'] = pos_list
+
 
     return seq_dict
 
