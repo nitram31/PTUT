@@ -12,7 +12,7 @@ def deltaG(seq_dict):
     """Takes a dictionary and adds the predicted hydrophobicity score of the TM segment"""
     for current_id in seq_dict.keys():
         seq = seq_dict[current_id]['seq']
-        tmhmm_pred = seq_dict[current_id]['DeltaG+HMMTOP_TM_pred']
+        tmhmm_pred = seq_dict[current_id]['TMsegment_pred']
 
         tm_segment = ""
         for i in range(0, len(tmhmm_pred), 3):
@@ -33,11 +33,11 @@ def deltaG(seq_dict):
             pred = re.search(res, str(all))
             if pred is not None:
                 deltaG_pred = pred.group(2)
-                seq_dict[current_id]['deltaG_pred_score'] = deltaG_pred
+                seq_dict[current_id]['deltaG_pred'] = deltaG_pred
         try:
-            seq_dict[current_id]['deltaG_pred_score'] = seq_dict[current_id]['deltaG_pred_score']
+            seq_dict[current_id]['deltaG_pred'] = seq_dict[current_id]['deltaG_pred']
         except:
-            seq_dict[current_id]['deltaG_pred_score'] = "tm segment too long"
+            seq_dict[current_id]['deltaG_pred'] = "tm segment too long"
 
     return seq_dict
 
@@ -68,24 +68,19 @@ def deltaG_TM(seq_dict):
         time.sleep(0.75)
         button_area.click()
         time.sleep(2)
-        pos_list = seq_dict[current_id]['DeltaG+HMMTOP_TM_pred']
+        pos_list = seq_dict[current_id]['TMsegment_pred']
         try: #if tm segment is found
             text = driver.find_element(By.XPATH, '/html/body/table[2]/tbody/tr[4]/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody').text
-
             pattern = re.compile(r'(\d{1,3})(-)(\d{1,3})\s*(\d{2})\s*(.{6})\s*')  # regular expression that finds the string of results
-
-            first_res_orientation = seq_dict[current_id]['DeltaG+HMMTOP_TM_pred'][0]
-
+            first_res_orientation = seq_dict[current_id]['TMsegment_pred'][0]
             if first_res_orientation == 'O' or first_res_orientation == 'o':
                 other_orientation = 'i'
             else:
                 other_orientation = 'O'
             tm_results = []
             score_result = []
-
             for line in text.splitlines():
                 deltaG_result = re.search(pattern, str(line))
-
                 if deltaG_result is not None:
 
                     tm_start = int(deltaG_result.group(1))
@@ -99,7 +94,6 @@ def deltaG_TM(seq_dict):
                         pos_list.append('M')
                         pos_list.append(tm_results[0])
                         pos_list.append(tm_results[1])
-
             for i in range(1, len(tm_results), 2):
                 if pos_list[-3:][0] == 'M':
                     if pos_list[-6:][0] == first_res_orientation:
@@ -115,14 +109,12 @@ def deltaG_TM(seq_dict):
                         pos_list.append('M')
                         pos_list.append(tm_results[i+1])
                         pos_list.append(tm_results[i+2])
-
-
-            seq_dict[current_id]['DeltaG+HMMTOP_TM_pred'] = pos_list
-            seq_dict[current_id]['deltaG_pred_score'] = score_result
+            seq_dict[current_id]['TMsegment_pred'] = pos_list
+            seq_dict[current_id]['deltaG_pred'] = score_result
         except:
             pos_list.append(len(text_to_send))
-            seq_dict[current_id]['DeltaG+HMMTOP_TM_pred'] = pos_list
-            seq_dict[current_id]['deltaG_pred_score'] = 'No tm'
+            seq_dict[current_id]['TMsegment_pred'] = pos_list
+            seq_dict[current_id]['deltaG_pred'] = 'No tm'
 
     return seq_dict
 if __name__ == "__main__":

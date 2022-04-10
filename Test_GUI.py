@@ -63,14 +63,13 @@ def main():
 
             #print(seq_dict)
 
-            """ ### colonne localisation
-            dict_localisations = localizations02
+            ### colonne localisation
+            dict_localisations = localizations02.creertable(r"localisation_S2.csv")
             for keys in seq_dict:
-                seq_dict[keys].update({"localization: "}) #add new key to seq_dict for every protein
-                for i in keys.dict_localisations: #iteration of dictionnary in a function localizations02
-                    if seq_dict[keys] == dict_localisations[i] : #si on trouve la proteine de seq_dict dans localizations02
-                        seq_dict[keys]["localization: "] = dict_localisations[i].value """
-
+                for i in dict_localisations.keys(): #iteration of dictionnary in a function localizations02
+                    if seq_dict[keys] == dict_localisations[i]:
+                        seq_dict[keys]["localization: "] = dict_localisations[i].value
+            """si on trouve la proteine de seq_dict dans localizations02"""
 
             table_values = []
             col_names = []

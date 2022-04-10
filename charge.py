@@ -16,7 +16,7 @@ def dict_parser(seq_dict):
     """Takes a dictionary and adds the cumulative charge of the 10 amino acids"""
     for current_id in seq_dict.keys():
         seq = seq_dict[current_id]['seq']
-        tmhmm_pred = seq_dict[current_id]['DeltaG+HMMTOP_TM_pred']
+        tmhmm_pred = seq_dict[current_id]['TMsegment_pred']
         tm_segment = ""
 
         for i in range(0, len(tmhmm_pred), 3): #iterate on the length of the pos_list, to select the letter
@@ -29,7 +29,6 @@ def dict_parser(seq_dict):
                         tm_segment += seq[l]
 
         seq_dict[current_id]['charge'] = wagdalena(tm_segment)
-
     return seq_dict
 
 def charge_sort(seq_dict):
@@ -44,4 +43,4 @@ def charge_sort(seq_dict):
 
 
 if __name__ == "__main__":
-    print(wagdalena("AGH"))
+    print(wagdalena("CSHWQLTQMFQRFYPGQAPSLAENFAEHVLRATNQISKNDPVGAIHNAE"))
