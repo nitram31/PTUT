@@ -25,10 +25,10 @@ def parse_targetp(targetp_result, seq_dict):
                     targetp_pred_score = matched_line.group(4)
                 else:
                     targetp_pred_score = matched_line.group(3)
-                for current_id in seq_dict.keys():
-                    if prot_id in current_id:
-                        seq_dict[current_id]['targetp_pred'] = targetp_pred
-                        seq_dict[current_id]['targetp_pred_score'] = targetp_pred_score
+                    for current_id in seq_dict.keys():
+                        if prot_id in current_id:
+                            seq_dict[current_id]['targetp_pred'] = targetp_pred
+                            seq_dict[current_id]['targetp_pred_score'] = targetp_pred_score
     return seq_dict
 
 

@@ -10,6 +10,8 @@ import deltaG_interaction
 import HMMTOP
 import Mylib.PTUT.charge as charge
 import localizations02
+import Class
+
 
 
 def main():
@@ -32,17 +34,19 @@ def main():
             #seq_dict = TargetP.parse_targetp(r"D:\Bureau\Cours\M1\pythonProject\Mylib\PTUT\scere_summary.targetp2",
                                              #seq_dict)
             #print(seq_dict)
+            seq_dict = Fastaboy.csv_parser(seq_dict, r"C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\output.csv", sep=";")
+
             #seq_dict = Fastaboy.final_parser(r'C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\results.txt', seq_dict)
             #print('juste lu', seq_dict)
-            seq_dict = tm_hmm.tmhmm_read(seq_dict)
+            #seq_dict = tm_hmm.tmhmm_read(seq_dict)
             #print(seq_dict)
             #print("before HMMTOP", len(seq_dict.keys()))
-            seq_dict = HMMTOP.hmmtop_search(seq_dict)
+            #seq_dict = HMMTOP.hmmtop_search(seq_dict)
             #print("after HMMTOP", len(seq_dict.keys()))
             #print(seq_dict)
             #seq_dict = tm_hmm.sort_dict(seq_dict)
 
-            seq_dict = deltaG_interaction.deltaG_TM(seq_dict)
+            #seq_dict = deltaG_interaction.deltaG_TM(seq_dict)
             #print(seq_dict)
 
             """temp_seq_dict = {}
@@ -58,10 +62,11 @@ def main():
             #seq_dict = charge.charge_sort(seq_dict)
             #print(seq_dict)
             #print("after charge sort")
-
+            Class.class_predictor(seq_dict)
             #seq_dict = tm_hmm.orientation_sort(seq_dict)
 
-            print(seq_dict)
+            #print(seq_dict)
+
 
             ### colonne localisation
             dict_localisations = localizations02.creertable(r"localisation_S2.csv")
@@ -71,7 +76,7 @@ def main():
                         seq_dict[keys]["localization: "] = dict_localisations[i].value
             """si on trouve la proteine de seq_dict dans localizations02"""
 
-            table_values = []
+            """table_values = []
             col_names = []
 
             first_prot = list(seq_dict.keys())[0]
@@ -91,18 +96,8 @@ def main():
 
             #print(tabulate(table_values, headers=col_names, tablefmt="fancy_grid"))
             content = pd.DataFrame(table_values, columns=col_names)
-            content.to_csv('output.csv', sep=";")
-<<<<<<< Updated upstream
+            content.to_csv('output.csv', sep=";")"""
 
-=======
->>>>>>> Stashed changes
-
-
-
-
-
-<<<<<<< Updated upstream
-=======
             """
 >>>>>>> Stashed changes
             #print("kekw", len(seq_dict.keys()))
