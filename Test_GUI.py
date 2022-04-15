@@ -62,7 +62,7 @@ def main():
             #seq_dict = charge.charge_sort(seq_dict)
             #print(seq_dict)
             #print("after charge sort")
-            Class.class_predictor(seq_dict)
+
             #seq_dict = tm_hmm.orientation_sort(seq_dict)
 
             #print(seq_dict)
@@ -70,13 +70,18 @@ def main():
 
             ### colonne localisation
             dict_localisations = localizations02.creertable(r"localisation_S2.csv")
-            for keys in seq_dict:
+            for keys in seq_dict.keys():
                 for i in dict_localisations.keys(): #iteration of dictionnary in a function localizations02
-                    if seq_dict[keys] == dict_localisations[i]:
-                        seq_dict[keys]["localization: "] = dict_localisations[i].value
-            """si on trouve la proteine de seq_dict dans localizations02"""
 
-            """table_values = []
+                    if str(i) in keys:
+                        seq_dict[keys]["localization: "] = dict_localisations[i]
+
+
+            """si on trouve la proteine de seq_dict dans localizations02"""
+            print(seq_dict)
+            Class.class_predictor(seq_dict)
+
+            table_values = []
             col_names = []
 
             first_prot = list(seq_dict.keys())[0]
@@ -96,10 +101,10 @@ def main():
 
             #print(tabulate(table_values, headers=col_names, tablefmt="fancy_grid"))
             content = pd.DataFrame(table_values, columns=col_names)
-            content.to_csv('output.csv', sep=";")"""
+            content.to_csv('output.csv', sep=";")
 
-            """
->>>>>>> Stashed changes
+    """
+    >>>>>>> Stashed changes
             #print("kekw", len(seq_dict.keys()))
             with open("results.txt", "w") as f:
                 for current_id in seq_dict.keys():
@@ -115,7 +120,7 @@ def main():
                                    + "\n"
                     f.write(current_line)"""
 
-            '''data_size = int(len(seq_dict.keys())/2)
+    '''data_size = int(len(seq_dict.keys())/2)
             progress = 0
 
             for residue_number in range(0, int(data_size)):

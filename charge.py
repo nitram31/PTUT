@@ -97,4 +97,4 @@ def charge_sort(seq_dict):
 
 
 if __name__ == "__main__":
-    print(wagdalena("AGH"))
+    print("charge nette =", wagdalena("ARKGVQLGLV"))

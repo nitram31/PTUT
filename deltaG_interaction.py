@@ -88,7 +88,7 @@ def deltaG_TM(seq_dict):
                     score_result.append(deltaG_score)
                     tm_results.append(tm_start)
                     tm_results.append(tm_end)
-                    if pos_list[1] == 1:
+                    if pos_list[-1] == 1:
                         pos_list.append(tm_results[0]-1)
                         pos_list.append('M')
                         pos_list.append(tm_results[0])
@@ -100,13 +100,14 @@ def deltaG_TM(seq_dict):
                     pos_list.append(pos_list[-2:][0]+1)
                     try:
                         pos_list.append(tm_results[i+1]-1)
-                    except:
+
+                    except IndexError:
                         pos_list.append(len(text_to_send))
+
                     if i != len(tm_results) - 1:
                         pos_list.append('M')
                         pos_list.append(tm_results[i+1])
                         pos_list.append(tm_results[i+2])
-
 
             seq_dict[current_id]['DeltaG_TM_pred'] = pos_list
             seq_dict[current_id]['deltaG_pred_score'] = score_result
