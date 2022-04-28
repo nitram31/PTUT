@@ -36,18 +36,11 @@ def read_table(file):
         seq_dict[cID] = pSeq
     return seq_dict
 
-
+# adds uniprot link for every protein in main dictionnary
 def get_uniprot_url(seq_dict):
     for current_id in seq_dict:
-        """cpt = 0"""
+
         uniprot_id = current_id.split("|")[1]
-
-        """for letter in current_id:
-            if letter == "|":
-                cpt += 1
-            elif cpt == 1:
-                uniprot_id += letter"""
-
         base_url = "http://www.uniprot.org/uniprot/"
         current_url = base_url + uniprot_id
         seq_dict[current_id]["Uniprot_link"] = current_url
