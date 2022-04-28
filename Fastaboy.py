@@ -2,11 +2,11 @@ from Bio import SeqIO
 import ast
 import pandas as pd
 
-
+"""getting fasta sequences and protein names"""
 def fasta_reader(path):
     seq_dict = {}
     with open(path) as file:
-        for record in SeqIO.parse(file, "fasta"):
+        for record in SeqIO.parse(file, "fasta"): #Biopython module functionnality
             residue = record.seq
             current_id = record.id
             seq_dict[current_id] = {"seq": residue}

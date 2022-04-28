@@ -19,5 +19,3 @@ if __name__ == "__main__":
     df_class3 = numberTM(df_presequence) # apply second fonction => filter on # of TM (at least 2)
     
     df_class3.to_csv("classe3.csv", sep=";", index=False)  # export file protein with a presequence AND at least 2TM. 
-
-"""hihihhihiiih"""
