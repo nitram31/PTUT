@@ -25,6 +25,7 @@ def read_table(file):
         currentUrl = baseUrl \
                      + cID \
                      + ".fasta"
+
         response = r.post(currentUrl)
         cData = ''.join(response.text)
         Seq = StringIO(cData)

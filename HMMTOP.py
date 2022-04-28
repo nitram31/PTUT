@@ -37,18 +37,6 @@ def hmmtop_search(seq_dict):
     button_id = '/html/body/center/table/tbody/tr[2]/td/table/tbody/tr[3]/td[2]/input'
     cpt = 1
 
-
-    #temporary
-    """temp_seq_dict = {}
-    for current_id in seq_dict.keys():
-        try:
-            if seq_dict[current_id]['targetp_pred'][0] != 'MT' and seq_dict[current_id]['TMsegment_pred'].count(
-                    'M') == 0 or seq_dict[current_id]['TMsegment_pred'].count('M') == 1:
-                temp_seq_dict[current_id] = seq_dict[current_id]
-        except:
-            print("passed")
-
-    seq_dict = temp_seq_dict"""
     max_length = len(seq_dict.keys())
     for current_id in seq_dict.keys():
         print(cpt, "/", max_length)
