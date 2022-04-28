@@ -3,6 +3,8 @@ from Bio import SeqIO
 from io import StringIO
 import pandas
 
+"""parsing of first input file containing protein names and getting fasta sequences from uniprot"""
+
 def write_to_file(seq_dict):
     with open("Yeast_proteome.txt", "w") as f :
 
