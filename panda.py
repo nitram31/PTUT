@@ -1,4 +1,5 @@
 import pandas as pd 
+""" not used but saved as archive for future modifications"""
 
 def chargeparse(df, classe):
     if classe == 1:
