@@ -6,7 +6,7 @@ def str_to_pos(annotation):
     """reformat the annotation output from pytmhmm to a list by counting the number of letters in the string and
     recording it as [letter_corresponding_to_subcellular_localisation, first_position, last_position]"""
     last_pos = annotation[0]
-    pos_list = []
+    pos_list = [] #list initialization containing predicted TM positions and prediction score
     pos_list.append(last_pos)
     pos_list.append(1)
 
@@ -40,6 +40,10 @@ def reformat_result(pos_list):
 
     annotation = ""
     for i in range(0, len(pos_list), 3):
+        """
+        pos_list[i + 1] : first aminoacid of TM segment taken into account
+        pos_list[i + 2] : last  aminoacid of TM segment taken into account
+        """
         annotation += str(pos_list[i + 1]) \
                       + "-" \
                       + str(pos_list[i + 2]) \
