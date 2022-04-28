@@ -5,22 +5,23 @@ import pandas
 
 """parsing of first input file containing protein names and getting fasta sequences from uniprot"""
 
-def write_to_file(seq_dict):
-    with open("Yeast_proteome.txt", "w") as f :
 
+def write_to_file(seq_dict):
+    with open("Yeast_proteome.txt", "w") as f:
         for current_protein in seq_dict.keys():
             current_id = list(seq_dict[current_protein].keys())[0]
             current_line = str(current_id) \
-            + "\n" \
-            + str(seq_dict[current_protein][current_id].seq) \
-            + "\n"
+                           + "\n" \
+                           + str(seq_dict[current_protein][current_id].seq) \
+                           + "\n"
             f.write(current_line)
+
 
 def read_table(file):
     id_file = pandas.read_excel(file, index_col=0)
     seq_dict = {}
     i = 0
-    for cID in id_file["UniProt ID"] :
+    for cID in id_file["UniProt ID"]:
         print(cID, i)
         i += 1
         baseUrl = "http://www.uniprot.org/uniprot/"
@@ -33,13 +34,23 @@ def read_table(file):
         Seq = StringIO(cData)
         pSeq = SeqIO.to_dict(SeqIO.parse(Seq, 'fasta'))
         seq_dict[cID] = pSeq
-    return(seq_dict)
-seq_dict = read_table(r"C:\Users\Martin\Desktop\Cours\M1\S8\Projet_Tut\Seq_Ids.xlsx")
-write_to_file(seq_dict)
+    return seq_dict
+
+
+def get_uniprot_url(seq_dict):
+    for current_id in seq_dict:
+        cpt = 0
+        uniprot_id = ""
+        for letter in current_id:
+            if letter == "|":
+                cpt += 1
+            elif cpt == 1:
+                uniprot_id += letter
 
 
 
 
-
-
-
+        base_url = "http://www.uniprot.org/uniprot/"
+        current_url = base_url + uniprot_id
+        seq_dict[current_id]["Uniprot_link"] = current_url
+    return seq_dict

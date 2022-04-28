@@ -5,6 +5,7 @@ from Mylib.PTUT import Fastaboy
 from tabulate import tabulate
 import TargetP
 import pandas as pd
+import Id_extractor
 import tm_hmm
 import deltaG_interaction
 import HMMTOP
@@ -56,6 +57,7 @@ def main():
             seq_dict = temp_seq_dict"""
 
             seq_dict = charge.dict_parser(seq_dict)
+            seq_dict = Id_extractor.get_uniprot_url(seq_dict)
             #print("after dict parser", len(seq_dict.keys()))
             #print(seq_dict)
             #print("before charge sort")
@@ -69,12 +71,12 @@ def main():
 
 
             ### colonne localisation
-            dict_localisations = localizations02.creertable(r"localisation_S2.csv")
+            """dict_localisations = localizations02.creertable(r"localisation_S2.csv")
             for keys in seq_dict.keys():
                 for i in dict_localisations.keys(): #iteration of dictionnary in a function localizations02
 
                     if str(i) in keys:
-                        seq_dict[keys]["localization: "] = dict_localisations[i]
+                        seq_dict[keys]["localization: "] = dict_localisations[i]"""
 
 
             """si on trouve la proteine de seq_dict dans localizations02"""
@@ -100,8 +102,8 @@ def main():
                 table_values += line
 
             #print(tabulate(table_values, headers=col_names, tablefmt="fancy_grid"))
-            content = pd.DataFrame(table_values, columns=col_names)
-            content.to_csv('output.csv', sep=";")
+            """content = pd.DataFrame(table_values, columns=col_names)
+            content.to_csv('output.csv', sep=";")"""
 
     """
     >>>>>>> Stashed changes
