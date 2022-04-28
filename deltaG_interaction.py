@@ -16,10 +16,10 @@ def deltaG(seq_dict):
 
         tm_segment = ""
         for i in range(0, len(tmhmm_pred), 3):
-            if tmhmm_pred[i] == 'M':
+            if tmhmm_pred[i] == 'M': #when M is found in tmhmm results, we take first two coordinates an we reconstruct TM sequence
                 for l in range(tmhmm_pred[i+1], tmhmm_pred[i+2]):
                     tm_segment += seq[l]
-        link = "https://dgpred.cbr.su.se/analyze.php?with_length=on&seq=" + tm_segment
+        link = "https://dgpred.cbr.su.se/analyze.php?with_length=on&seq=" + tm_segment #base URL + sequence = link creation
 
         requete = requests.get(link)
         page = requete.content
@@ -28,16 +28,16 @@ def deltaG(seq_dict):
         data = soup.table
 
 
-        res = re.compile(r'(green|red)\">(.*)</span></b></big></td></tr>')
+        res = re.compile(r'(green|red)\">(.*)</span></b></big></td></tr>') #RE of searched value on Wen page
         for all in data:
             pred = re.search(res, str(all))
             if pred is not None:
                 deltaG_pred = pred.group(2)
-                seq_dict[current_id]['deltaG_pred_score'] = deltaG_pred
+                seq_dict[current_id]['deltaG_pred_score'] = deltaG_pred #saving Web scraping results in main dictionnary
         try:
             seq_dict[current_id]['deltaG_pred_score'] = seq_dict[current_id]['deltaG_pred_score']
         except:
-            seq_dict[current_id]['deltaG_pred_score'] = "tm segment too long"
+            seq_dict[current_id]['deltaG_pred_score'] = "tm segment too long" #dgpred has a limited sequence input length
 
     return seq_dict
 
@@ -45,14 +45,15 @@ def deltaG(seq_dict):
 def deltaG_TM(seq_dict):
     """Takes a dictionary and adds the predicted transmembrane location"""
     WINDOW_SIZE = "1920,1080"
+    #initialization of Chrome web driver
     chrome_options = Options()
-    chrome_options.add_argument("--headless")  # allows the window to ot be seen
+    chrome_options.add_argument("--headless")  # allows the window to not be seen in console
     chrome_options.add_argument("--window-size=%s" % WINDOW_SIZE)
     driver = webdriver.Chrome(options=chrome_options)
-    time.sleep(1)
+    time.sleep(1) #time of web page charging
     url = "https://dgpred.cbr.su.se/index.php?p=fullscan"
-    text_id = '/html/body/table[2]/tbody/tr[5]/td/form/textarea'
-    button_id = '/html/body/table[2]/tbody/tr[5]/td/form/input[1]'
+    text_id = '/html/body/table[2]/tbody/tr[5]/td/form/textarea' #XPATH adress pointing to the zone of sequence input
+    button_id = '/html/body/table[2]/tbody/tr[5]/td/form/input[1]' #XPATH adress pointing to the button we need to click to start the research
     cpt = 1
     max_length = len(seq_dict.keys())
     for current_id in seq_dict.keys():
@@ -63,12 +64,12 @@ def deltaG_TM(seq_dict):
         driver.get(url)  # refreshes the page to the menu
         text_area = driver.find_element(By.XPATH, text_id)  # find the text area to paste the sequence in
         button_area = driver.find_element(By.XPATH, button_id)
-        text_to_send = seq_dict[current_id]['seq']
+        text_to_send = seq_dict[current_id]['seq'] #paste the used part of the sequence in main dictionnary
         text_area.send_keys(text_to_send)
         time.sleep(0.75)
         button_area.click()
         time.sleep(1.75)
-        pos_list = ['x', 1]
+        pos_list = ['x', 1] #list initialization containing predicted TM positions and prediction score
         try: #if tm segment is found
             text = driver.find_element(By.XPATH, '/html/body/table[2]/tbody/tr[4]/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody').text
 
@@ -82,9 +83,9 @@ def deltaG_TM(seq_dict):
 
                 if deltaG_result is not None:
 
-                    tm_start = int(deltaG_result.group(1))
-                    tm_end = int(deltaG_result.group(3))
-                    deltaG_score = float(deltaG_result.group(5))
+                    tm_start = int(deltaG_result.group(1)) #coordinates of first TM aminoacid
+                    tm_end = int(deltaG_result.group(3)) #coordinates of last TM aminoacid
+                    deltaG_score = float(deltaG_result.group(5)) #score of prediction of the presence of TM segment
                     score_result.append(deltaG_score)
                     tm_results.append(tm_start)
                     tm_results.append(tm_end)
