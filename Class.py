@@ -1,5 +1,5 @@
 import pandas as pd
-
+""" not used but saved as archive for future modifications"""
 
 def class_predictor(seq_dict):
     id_list_class_1 = []
