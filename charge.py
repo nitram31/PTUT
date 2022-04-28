@@ -60,6 +60,7 @@ def dict_parser(seq_dict):
                             ten_after_tm_segment += seq[l]
                             five_after_tm_segment += seq[l]
                             five_after_tm_segment = five_after_tm_segment[0:4]
+
                         for l in range(TM_pred[i - 1] - 9, TM_pred[i - 1] - 1):
                             five_before_tm_segment += seq[l]
                             five_before_tm_segment = five_before_tm_segment[0:4]
@@ -73,8 +74,6 @@ def dict_parser(seq_dict):
                             five_before_tm_segment += seq[l]
                             five_before_tm_segment = five_before_tm_segment[0:4]
                             ten_before_tm_segment += seq[l]
-
-
 
                     seq_dict[current_id][tm_segment_length].append(TM_pred[i + 2] - TM_pred[i + 1])
                     seq_dict[current_id][plus_10_after_TM_charge].append(wagdalena(ten_after_tm_segment))
