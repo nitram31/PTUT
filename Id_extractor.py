@@ -39,16 +39,14 @@ def read_table(file):
 
 def get_uniprot_url(seq_dict):
     for current_id in seq_dict:
-        cpt = 0
-        uniprot_id = ""
-        for letter in current_id:
+        """cpt = 0"""
+        uniprot_id = current_id.split("|")[1]
+
+        """for letter in current_id:
             if letter == "|":
                 cpt += 1
             elif cpt == 1:
-                uniprot_id += letter
-
-
-
+                uniprot_id += letter"""
 
         base_url = "http://www.uniprot.org/uniprot/"
         current_url = base_url + uniprot_id
