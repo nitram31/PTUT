@@ -46,18 +46,11 @@ def main():
             #print("after HMMTOP", len(seq_dict.keys()))
             #print(seq_dict)
             #seq_dict = tm_hmm.sort_dict(seq_dict)
-
             #seq_dict = deltaG_interaction.deltaG_TM(seq_dict)
-            #print(seq_dict)
-
-            """temp_seq_dict = {}
-            for current_id in seq_dict.keys():
-                if seq_dict[current_id]['TMsegment_pred'].count('M') == 1:
-                    temp_seq_dict[current_id] = seq_dict[current_id]
-            seq_dict = temp_seq_dict"""
 
             seq_dict = charge.dict_parser(seq_dict)
             seq_dict = Id_extractor.get_uniprot_url(seq_dict)
+
             #print("after dict parser", len(seq_dict.keys()))
             #print(seq_dict)
             #print("before charge sort")
@@ -66,9 +59,6 @@ def main():
             #print("after charge sort")
 
             #seq_dict = tm_hmm.orientation_sort(seq_dict)
-
-            #print(seq_dict)
-
 
             ### colonne localisation
             """dict_localisations = localizations02.creertable(r"localisation_S2.csv")
@@ -80,7 +70,6 @@ def main():
 
 
             """si on trouve la proteine de seq_dict dans localizations02"""
-            print(seq_dict)
             Class.class_predictor(seq_dict)
 
             table_values = []
@@ -105,32 +94,6 @@ def main():
             """content = pd.DataFrame(table_values, columns=col_names)
             content.to_csv('output.csv', sep=";")"""
 
-    """
-    >>>>>>> Stashed changes
-            #print("kekw", len(seq_dict.keys()))
-            with open("results.txt", "w") as f:
-                for current_id in seq_dict.keys():
-                    current_line = str(current_id) \
-                                   + "\n" \
-                                   + str(seq_dict[current_id]['DeltaG+HMMTOP_TM_pred']) \
-                                   + "\n" \
-                                   + str(seq_dict[current_id]['deltaG_pred_score']) \
-                                   + "\n" \
-                                   + str(seq_dict[current_id]['charge']) \
-                                   + "\n" \
-                                   + str(seq_dict[current_id]['tmhmm_pred']) \
-                                   + "\n"
-                    f.write(current_line)"""
-
-    '''data_size = int(len(seq_dict.keys())/2)
-            progress = 0
-
-            for residue_number in range(0, int(data_size)):
-                progress_bar(residue_number, data_size)
-
-                progress = residue_number
-            progress_label = Label(root, text="finished")
-            progress_label.grid(row=5, column=0, sticky=W+E)'''
 
     def progress_bar(progress, data_size):
         status = str(progress) + " out of " + str(data_size)
