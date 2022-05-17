@@ -53,14 +53,12 @@ def class_predictor(seq_dict):
             seq_dict[current_id]['class'] = 'class 1'
             seq_dict[current_id]['score'] += 0.5
 
-
-
         elif current_id in id_list_class_2 and current_id not in id_list_class_1:
             seq_dict[current_id]['class'] = 'class 2'
             seq_dict[current_id]['score'] += 0.5
 
         elif current_id in id_list_class_2 and current_id in id_list_class_1:
-            seq_dict[current_id]['class'] = 'class 2'
+            seq_dict[current_id]['class'] = 'ambiguous : class 1 and 2'
             seq_dict[current_id]['score'] += 0.25
 
         elif current_id in id_list_class_3:

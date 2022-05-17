@@ -106,6 +106,19 @@ def charge_sort(seq_dict):
     seq_dict = temp_dict
     return seq_dict
 
+def charge_bias(seq_dict, seq_id, program):
+    if seq_dict[seq_id][program + '_TM_pred'].count('M') == 1:
+        best_minus_charge = max(
+            [seq_dict[seq_id][program + '_minus_10_before_TM'], seq_dict[seq_id][program + '_minus_5_before_TM']])
+        best_plus_charge = max(
+            [seq_dict[seq_id][program + '_plus_10_before_TM'], seq_dict[seq_id][program + '_plus_5_before_TM']])
+
+        if best_plus_charge > best_minus_charge:
+            return True  # c-in bias
+        else:
+            return False  # n-in bias
+
+
 
 if __name__ == "__main__":
     print("charge nette =", wagdalena("ARKGVQLGLV"))
