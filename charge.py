@@ -34,12 +34,12 @@ def dict_parser(seq_dict):
                 j += 1
 
             #initialization of charge variables for each software
-            plus_10_after_TM_charge = program_name + '_plus_10_after_TM_charge'
-            plus_10_after_TM_sequence = program_name + '_plus_10_after_TM_sequence'
-            plus_5_after_TM_charge = program_name + '_plus_5_after_TM_charge'
-            minus_10_before_TM_charge = program_name + '_minus_10_before_TM_charge'
-            minus_5_before_TM_charge = program_name + '_minus_5_before_TM_charge'
-            tm_segment_length = program_name + '_tm_segment_length'
+            plus_10_after_TM_charge = program_name + '_10_aa_C_ter_side_of_TM_charge'
+            plus_10_after_TM_sequence = program_name + '_10_aa_C_ter_side_of_TM_sequence'
+            plus_5_after_TM_charge = program_name + '_5_aa_C_ter_side_of_TM_charge'
+            minus_10_before_TM_charge = program_name + '_10_aa_N_ter_side_of_TM_charge'
+            minus_5_before_TM_charge = program_name + '5_aa_N_ter_side_of_TM_charge'
+            tm_segment_length = program_name + '_TM_segment_length'
 
             #initialization of dictionnary with empty lists
             seq_dict[current_id][tm_segment_length] = []
@@ -66,22 +66,33 @@ def dict_parser(seq_dict):
                             TM_pred[i + 2] + 9 : we calculate charge on the last aminoacid of TM +9 aminoacids after TM segment
                             """
                             ten_after_tm_segment += seq[l]
-                            five_after_tm_segment = ten_after_tm_segment[0:4] #first 5 aminoacids after TM segment
-
-                        for l in range(TM_pred[i - 1] - 9, TM_pred[i - 1] - 1):
-                            five_before_tm_segment += seq[l]
-                            five_before_tm_segment = five_before_tm_segment[0:4]
-                            ten_before_tm_segment += seq[l]
-
+                            five_after_tm_segment = ten_after_tm_segment[0:4]
+                             #first 5 aminoacids after TM segment
                     except IndexError:
+                        ten_after_tm_segment = ""
+                        five_after_tm_segment = ""
                         for l in range(TM_pred[i + 2] - 1, len(TM_pred)):
                             """we make this calculation if the sequence between two TM is smaller then 10 aminoacids"""
-                            five_after_tm_segment += seq[l]
-                            five_after_tm_segment = five_after_tm_segment[0:4]
                             ten_after_tm_segment += seq[l]
-                            five_before_tm_segment += seq[l]
-                            five_before_tm_segment = five_before_tm_segment[0:4]
+                            five_after_tm_segment = ten_after_tm_segment[0:4]
+
+                    try:
+                        for l in range(TM_pred[i - 1] - 9, TM_pred[i + 1]):
+
+                            if l > 0:
+                                ten_before_tm_segment += seq[l]
+                                five_before_tm_segment = ten_before_tm_segment[0:4]
+
+                            else:
+                                raise IndexError
+
+                    except IndexError:
+                        five_before_tm_segment = ""
+                        ten_before_tm_segment = ""
+                        for l in range(0, TM_pred[i + 1]):
+                            """we make this calculation if the sequence between two TM is smaller then 10 aminoacids"""
                             ten_before_tm_segment += seq[l]
+                            five_before_tm_segment = ten_before_tm_segment[0:4]
 
 
                     #results are saved in main dictionnary with corresponding column name
@@ -93,6 +104,8 @@ def dict_parser(seq_dict):
                     seq_dict[current_id][plus_10_after_TM_sequence].append(ten_after_tm_segment)
                     seq_dict[current_id][minus_5_before_TM_charge].append(wagdalena(five_before_tm_segment))
                     seq_dict[current_id][minus_10_before_TM_charge].append(wagdalena(ten_before_tm_segment))
+
+
 
     return seq_dict
 
@@ -121,4 +134,4 @@ def charge_bias(seq_dict, seq_id, program):
 
 
 if __name__ == "__main__":
-    print("charge nette =", wagdalena("ARKGVQLGLV"))
+    print("charge nette =", wagdalena("MVLP"))
