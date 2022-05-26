@@ -75,7 +75,7 @@ def main():
             for col in seq_dict[first_prot]:
                 col_names.append(col)
             col_names[0] = 'name'
-
+            col_names
             for key in seq_dict.keys():
                 line = []
                 key_list = [key]
@@ -86,7 +86,8 @@ def main():
                 table_values += line
 
             content = pd.DataFrame(table_values, columns=col_names)
-            content.to_csv('output.csv', sep=";")
+            print(col_names)
+            """content.to_csv('output.csv', sep=";")"""
             #print(seq_dict)
 
     def progress_bar(progress, data_size):
