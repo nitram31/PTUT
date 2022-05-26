@@ -25,8 +25,20 @@ Exemple : TMHMM prediction for BCS1 ⇒ ['i', 1, 50, 'M', 51, 73, 'O', 74, 456]
 
 The eigth column is the hydrophobicity score associated with a deltaG predicted TM segment, 'deltaG_pred_score' : it represents the corresponding apparent free energy difference and in general a positive score means a less stable TM segment.
 
-
 There are 5 columns per TM segment predicting software associated with charge : two per side of the TM segment, we take the charge of the 5 and 10 amino acids located before and after the TM segment or each of the TM segment if we have more. The last column is the bias of charge between two sides of a TM segment : we look at the charge calculated above and we see if one side has a higher positive charge than the other, leading to a bias that could bring a protein to be imported positive side first.
+
+Charge is calculated without pH dependency, we’ve only considered the number of electrons. Neutral amino acids have 0 associated charge, lysine (L), histidine (H) and arginine (R) have +1 associated charge and aspartc acid (D) and glutamic acid (E) have -1 associated charge. Calculation is made simply by adding elemental charges of amino acids respectively, for a given segment.
+
+Example : MDJ2 prediction with HMMTOP 
+
+In red the TM segment, highlight in yellow the segment in which the charge is calculated. And in **bold** the amino acid from the TM take into account for the calculation of the charge. 
+
+1 <mark>MVLP</mark><span style="color: red;">**I**IIGLG VTMVALSVKS GLNAWTV**Y**</span><mark>KTLSPLTIA</mark>KLN NIRIENPTAG YRDALKFKSS
+
+61 LIDEELKNRL NQYQGGFAPR MTEPEALLIL DISAREINHL DEKLLKKKHR KAMVRNHPDR 
+
+121 GGSPYMAAKI NEAKEVLERS VLLRKR*
+
 
 We included a column with Uniprot link.
 
@@ -36,11 +48,9 @@ The column 'class' is the predicted class given by the pipeline based on the num
 
 Associated with the class is the column 'score' : if one protein is predicted as class 1 but hasn't any of the other characteristics its score will be lower than a protein predicted with a charge bias.
 
-score = 0.5 : correct number of TM and presence or absence of presequence expected
-
-score = 0.75 : all of the above + one software predicts expected orientaion (charge bias)
-
-score = 1 : all of the above + at least two software predicts expected orientaion (charge bias)
+* score = 0.5 : correct number of TM and presence or absence of presequence expected
+* score = 0.75 : all of the above + one software predicts expected orientaion (charge bias)
+* score = 1 : all of the above + at least two software predicts expected orientaion (charge bias)
 
 
  
