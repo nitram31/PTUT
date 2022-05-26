@@ -1,6 +1,7 @@
 import pandas as pd
 from Mylib.PTUT import Fastaboy
 import TargetP
+
 """ not used but saved as archive for future modifications"""
 
 
@@ -35,8 +36,8 @@ def class_predictor(seq_dict):
             if seq_dict[current_id]['targetp_pred'] != 'MT':
                 if tm_pred.count('M') == 1:
 
-                        id_list_class_1.append(current_id)
-                        predictor_name_1.append(program_name)
+                    id_list_class_1.append(current_id)
+                    predictor_name_1.append(program_name)
                 elif tm_pred.count('M') == 2:
 
                     id_list_class_2.append(current_id)
@@ -47,8 +48,23 @@ def class_predictor(seq_dict):
         predictor_list_1 += predictor_name_1
         predictor_list_2 += predictor_name_2
 
-
     for current_id in seq_dict.keys():
+        bias = []
+        bias_results = []
+        keys = seq_dict[current_id]
+
+        for key in keys:
+            if 'charge_bias' in key:  # we search the charge bias column
+                bias.append(key)
+
+        for bias_column in bias:
+            bias_results.append(seq_dict[current_id][bias_column])
+
+        if 'c-in bias' in bias_results:
+            seq_dict[current_id]['score'] += 0.25
+            if bias_results.count('c-in bias') > 1:
+                seq_dict[current_id]['score'] += 0.25
+
         if current_id in id_list_class_1 and current_id not in id_list_class_2:
             seq_dict[current_id]['class'] = 'class 1'
             seq_dict[current_id]['score'] += 0.5
@@ -64,6 +80,8 @@ def class_predictor(seq_dict):
         elif current_id in id_list_class_3:
             seq_dict[current_id]['class'] = 'class 3'
             seq_dict[current_id]['score'] += 0.5
+
+
 
         """id_list_class_2 = list(dict.fromkeys(id_list_class_2))
             id_list_class_1 = list(dict.fromkeys(id_list_class_1))"""
@@ -103,7 +121,6 @@ def class_predictor(seq_dict):
     return seq_dict
 
 
-
 if __name__ == "__main__":
     seq_dict = Fastaboy.fasta_reader("Yeast_proteome.txt")
 
@@ -111,6 +128,7 @@ if __name__ == "__main__":
                                      seq_dict)
     # seq_dict = TargetP.parse_targetp(r"D:\Bureau\Cours\M1\pythonProject\Mylib\PTUT\scere_summary.targetp2",
     # seq_dict)
-    seq_dict = Fastaboy.csv_parser(seq_dict, r'C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\output.csv', sep=";")
+    seq_dict = Fastaboy.csv_parser(seq_dict, r'C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\output.csv',
+                                   sep=";")
     seq_dict = class_predictor(seq_dict)
     print(seq_dict)
