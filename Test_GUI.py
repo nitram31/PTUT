@@ -74,21 +74,52 @@ def main():
             first_prot = list(seq_dict.keys())[0]
             for col in seq_dict[first_prot]:
                 col_names.append(col)
+            temp_colname = col_names.copy()
+
             col_names[0] = 'name'
-            col_names
+            col_names.remove("localization: ")
+            col_names.remove("Uniprot_link")
+            col_names.remove("tmhmm charge_bias")
+            col_names.remove("HMMTOP charge_bias")
+            col_names.remove("DeltaG charge_bias")
+            col_names.insert(1, temp_colname[28])
+            col_names.insert(2, temp_colname[29])
+            col_names.insert(27, temp_colname[13])
+            col_names.insert(27, temp_colname[20])
+            col_names.insert(27, temp_colname[27])
+            print(col_names)
             for key in seq_dict.keys():
                 line = []
                 key_list = [key]
                 for variable_names in seq_dict[key]:
                     if variable_names != 'seq':
                         key_list.append(seq_dict[key][variable_names])
+
+                temp_key_list = key_list.copy()
+                key_list.pop(28)
+
+                key_list.pop(28)
+
+                key_list.pop(13)
+
+                key_list.pop(19)
+
+
+
+
+                key_list.insert(1, temp_key_list[28])
+                key_list.insert(2, temp_key_list[29])
+                key_list.insert(28, temp_key_list[13])
+                key_list.insert(28, temp_key_list[20])
                 line.append(key_list)
+
                 table_values += line
 
+            print(table_values)
+
             content = pd.DataFrame(table_values, columns=col_names)
-            print(col_names)
-            """content.to_csv('output.csv', sep=";")"""
-            #print(seq_dict)
+
+            content.to_csv('output.csv', sep=";")
 
     def progress_bar(progress, data_size):
         status = str(progress) + " out of " + str(data_size)
