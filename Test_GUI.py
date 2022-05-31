@@ -1,7 +1,7 @@
 import tkinter
 from tkinter import *
 from tkinter import filedialog
-from Mylib.PTUT import Fastaboy
+import Fastaboy
 from tabulate import tabulate
 import TargetP
 import pandas as pd
