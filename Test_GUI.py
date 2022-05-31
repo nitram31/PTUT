@@ -9,7 +9,7 @@ import Id_extractor
 import tm_hmm
 import deltaG_interaction
 import HMMTOP
-import Mylib.PTUT.charge as charge
+import charge
 import localizations02
 import Class
 
