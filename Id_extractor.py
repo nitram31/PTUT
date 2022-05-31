@@ -22,7 +22,7 @@ def read_table(file):
     seq_dict = {}
     i = 0
     for cID in id_file["UniProt ID"]:
-        print(cID, i)
+        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(cID, i)
         i += 1
         baseUrl = "http://www.uniprot.org/uniprot/"
         currentUrl = baseUrl \

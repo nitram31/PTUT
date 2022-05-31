@@ -1,5 +1,5 @@
 import pandas as pd
-from Mylib.PTUT import Fastaboy
+import Fastaboy
 import TargetP
 
 """ not used but saved as archive for future modifications"""
