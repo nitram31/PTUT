@@ -31,7 +31,7 @@ def hmmtop_search(seq_dict):
     chrome_options = Options()
     chrome_options.add_argument("--headless")   # allows the window to not be seen in console
     chrome_options.add_argument("--window-size=%s" % WINDOW_SIZE)
-    driver = webdriver.Chrome(options=chrome_options)
+    driver = webdriver.Chrome(executable_path='chromedriver.exe', options= chrome_options)
     time.sleep(1) #time of web page charging
     url = "http://www.enzim.hu/hmmtop/html/submit.html"
     text_id = '/html/body/center/table/tbody/tr[2]/td/table/tbody/tr[2]/td/font/textarea' #XPATH adress pointing to the zone of sequence input

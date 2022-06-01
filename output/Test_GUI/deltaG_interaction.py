@@ -49,7 +49,7 @@ def deltaG_TM(seq_dict):
     chrome_options = Options()
     chrome_options.add_argument("--headless")  # allows the window to not be seen in console
     chrome_options.add_argument("--window-size=%s" % WINDOW_SIZE)
-    driver = webdriver.Chrome(options=chrome_options)
+    driver = webdriver.Chrome(executable_path='chromedriver.exe', options= chrome_options)
     time.sleep(1) #time of web page charging
     url = "https://dgpred.cbr.su.se/index.php?p=fullscan"
     text_id = '/html/body/table[2]/tbody/tr[5]/td/form/textarea' #XPATH adress pointing to the zone of sequence input
