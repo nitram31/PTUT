@@ -16,6 +16,7 @@ import Class
 
 def main():
     root = Tk()
+    root.title('Mitonaute analysis pipeline')
 
     def myclick():
         path = mypath.get()
