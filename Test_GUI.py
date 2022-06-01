@@ -29,32 +29,22 @@ def main():
             mylabel2.grid(row=4, column=0)
             seq_dict = Fastaboy.fasta_reader(path)
 
-            seq_dict = TargetP.parse_targetp(
-                r"C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\scere_summary.targetp2", seq_dict)
-            # seq_dict = TargetP.parse_targetp(r"D:\Bureau\Cours\M1\pythonProject\Mylib\PTUT\scere_summary.targetp2",
-            # seq_dict)
+            seq_dict = TargetP.parse_targetp('targetp2.txt', seq_dict)
 
-            seq_dict = Fastaboy.csv_parser(seq_dict,
-                                           r"C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\output.csv",
-                                           sep=";")
 
-            # seq_dict = Fastaboy.final_parser(r'C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\results.txt', seq_dict)
+            #seq_dict = Fastaboy.csv_parser(seq_dict, r"output.csv", sep=";")
 
-            # seq_dict = tm_hmm.tmhmm_read(seq_dict)
+            #seq_dict = Fastaboy.final_parser(r'C:\Users\Martin\PycharmProjects\pythonProject\Mylib\PTUT\results.txt', seq_dict)
 
-            # seq_dict = HMMTOP.hmmtop_search(seq_dict)
+            seq_dict = tm_hmm.tmhmm_read(seq_dict)
 
-            # seq_dict = tm_hmm.sort_dict(seq_dict)
+            seq_dict = HMMTOP.hmmtop_search(seq_dict)
 
-            # seq_dict = deltaG_interaction.deltaG_TM(seq_dict)
+            seq_dict = deltaG_interaction.deltaG_TM(seq_dict)
 
             seq_dict = charge.dict_parser(seq_dict)
 
             seq_dict = Id_extractor.get_uniprot_url(seq_dict)
-
-            # seq_dict = charge.charge_sort(seq_dict)
-
-            # seq_dict = tm_hmm.orientation_sort(seq_dict)
 
             ### colonne localisation
 
