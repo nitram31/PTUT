@@ -19,7 +19,7 @@ from typing import List
 from selenium.webdriver.chromium import service
 
 
-DEFAULT_EXECUTABLE_PATH = "chromedriver.exe"
+DEFAULT_EXECUTABLE_PATH = "./chromedriver.exe"
 
 
 class Service(service.ChromiumService):
